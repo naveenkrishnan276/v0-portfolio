@@ -33,7 +33,7 @@ export default function SplashScreen({ onComplete }: { onComplete: () => void })
     return () => clearTimeout(timer)
   }, [currentIndex, onComplete])
 
-  if (!isVisible) {
+  if (!isVisible || currentIndex >= languages.length) {
     return null
   }
 
