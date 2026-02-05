@@ -1,7 +1,9 @@
 'use client'
 
-import { useEffect, useRef } from 'react'
+import { useRef } from 'react'
+import { motion, useScroll, useTransform } from 'framer-motion'
 import { ExternalLink, Github } from 'lucide-react'
+import ParallaxSection from './ParallaxSection'
 
 /*
  * ============================================
@@ -20,7 +22,7 @@ const projects = [
   {
     id: 1,
     title: 'Project One',
-    description: 'A brief description of your first project and what it does.',
+    description: 'A modern web application showcasing innovative design and seamless user experience.',
     tech: ['React', 'Next.js', 'TypeScript', 'Tailwind'],
     link: '#',
     github: '#',
@@ -28,7 +30,7 @@ const projects = [
   {
     id: 2,
     title: 'Project Two',
-    description: 'A brief description of your second project and its features.',
+    description: 'Full-stack solution with robust backend architecture and real-time features.',
     tech: ['Node.js', 'Express', 'PostgreSQL', 'Docker'],
     link: '#',
     github: '#',
@@ -36,110 +38,133 @@ const projects = [
   {
     id: 3,
     title: 'Project Three',
-    description: 'A brief description of another project you have built.',
+    description: 'AI-powered platform delivering intelligent insights and automation.',
     tech: ['Python', 'FastAPI', 'React', 'MongoDB'],
-    link: '#',
-    github: '#',
-  },
-  {
-    id: 4,
-    title: 'Project Four',
-    description: 'Description of yet another impressive project.',
-    tech: ['Vue.js', 'Firebase', 'Stripe', 'Vercel'],
     link: '#',
     github: '#',
   },
 ]
 
-export default function Projects() {
-  const sectionRef = useRef<HTMLElement>(null)
+function ProjectCard({ 
+  project, 
+  index 
+}: { 
+  project: typeof projects[0]
+  index: number 
+}) {
+  const ref = useRef<HTMLDivElement>(null)
+  
+  const { scrollYProgress } = useScroll({
+    target: ref,
+    offset: ['start end', 'center center'],
+  })
 
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.querySelectorAll('.reveal-up').forEach((el, i) => {
-              setTimeout(() => {
-                el.classList.add('revealed')
-              }, i * 100)
-            })
-          }
-        })
-      },
-      { threshold: 0.1 }
-    )
-
-    if (sectionRef.current) {
-      observer.observe(sectionRef.current)
-    }
-
-    return () => observer.disconnect()
-  }, [])
+  const y = useTransform(scrollYProgress, [0, 1], [100, 0])
+  const opacity = useTransform(scrollYProgress, [0, 0.3, 1], [0, 0.5, 1])
+  const scale = useTransform(scrollYProgress, [0, 1], [0.9, 1])
 
   return (
-    <section ref={sectionRef} className="py-24 px-4 parallax-section">
-      <div className="max-w-6xl mx-auto">
-        {/* Section Header - No description */}
-        <div className="mb-16 text-center">
-          <h2 className="reveal-up text-4xl sm:text-5xl font-display font-bold gradient-text">
-            Featured Projects
-          </h2>
-        </div>
+    <motion.div
+      ref={ref}
+      style={{ y, opacity, scale }}
+      className="group"
+    >
+      <div className="glass-effect rounded-3xl overflow-hidden border border-transparent hover:border-primary/30 transition-all duration-500">
+        {/* Gradient top bar */}
+        <div className="h-1 bg-gradient-to-r from-[hsl(270,100%,65%)] via-[hsl(200,100%,60%)] to-[hsl(330,100%,65%)]" />
 
-        {/* Projects Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {projects.map((project) => (
-            <div
-              key={project.id}
-              className="reveal-up group glass-effect rounded-2xl overflow-hidden hover:border-primary/50 transition-all duration-500 hover:shadow-xl hover:shadow-primary/10"
+        {/* Content */}
+        <div className="p-8 md:p-10">
+          {/* Project number */}
+          <span className="text-6xl font-display font-normal text-muted/20 absolute top-4 right-6">
+            0{project.id}
+          </span>
+
+          {/* Title */}
+          <h3 className="text-3xl md:text-4xl font-display font-normal uppercase tracking-wider text-foreground mb-4 group-hover:gradient-text transition-all">
+            {project.title}
+          </h3>
+
+          {/* Description */}
+          <p className="text-muted-foreground text-lg leading-relaxed mb-8 max-w-2xl">
+            {project.description}
+          </p>
+
+          {/* Tech Stack */}
+          <div className="flex flex-wrap gap-3 mb-8">
+            {project.tech.map((tech) => (
+              <span
+                key={tech}
+                className="px-4 py-2 text-sm rounded-full bg-gradient-to-r from-[hsl(270,100%,65%,0.1)] to-[hsl(330,100%,65%,0.1)] text-foreground border border-primary/20 hover:border-primary/50 transition-colors"
+              >
+                {tech}
+              </span>
+            ))}
+          </div>
+
+          {/* Links */}
+          <div className="flex gap-4">
+            <a
+              href={project.link}
+              className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-gradient-to-r from-[hsl(270,100%,65%)] to-[hsl(330,100%,65%)] text-white font-semibold hover:opacity-90 transition-opacity"
             >
-              {/* Project gradient header */}
-              <div className="h-2 bg-gradient-to-r from-primary to-secondary" />
-
-              {/* Project Content */}
-              <div className="p-6">
-                <h3 className="text-xl font-display font-bold mb-3 group-hover:text-primary transition-colors">
-                  {project.title}
-                </h3>
-                <p className="text-muted-foreground text-sm mb-5 leading-relaxed">
-                  {project.description}
-                </p>
-
-                {/* Tech Stack */}
-                <div className="flex flex-wrap gap-2 mb-6">
-                  {project.tech.map((tech) => (
-                    <span
-                      key={tech}
-                      className="px-3 py-1 text-xs rounded-full bg-primary/10 text-primary border border-primary/20"
-                    >
-                      {tech}
-                    </span>
-                  ))}
-                </div>
-
-                {/* Links */}
-                <div className="flex gap-4 pt-4 border-t border-border">
-                  <a
-                    href={project.link}
-                    className="flex items-center gap-2 text-sm font-medium text-muted-foreground hover:text-primary transition-colors group/link"
-                  >
-                    <span>Live Demo</span>
-                    <ExternalLink className="w-4 h-4 group-hover/link:translate-x-0.5 group-hover/link:-translate-y-0.5 transition-transform" />
-                  </a>
-                  <a
-                    href={project.github}
-                    className="flex items-center gap-2 text-sm font-medium text-muted-foreground hover:text-primary transition-colors group/link"
-                  >
-                    <span>Source</span>
-                    <Github className="w-4 h-4 group-hover/link:translate-x-0.5 group-hover/link:-translate-y-0.5 transition-transform" />
-                  </a>
-                </div>
-              </div>
-            </div>
-          ))}
+              Live Project
+              <ExternalLink className="w-4 h-4" />
+            </a>
+            <a
+              href={project.github}
+              className="inline-flex items-center gap-2 px-6 py-3 rounded-full border border-border text-foreground font-semibold hover:border-primary/50 hover:text-primary transition-all"
+            >
+              Source
+              <Github className="w-4 h-4" />
+            </a>
+          </div>
         </div>
       </div>
-    </section>
+    </motion.div>
+  )
+}
+
+export default function Projects() {
+  const ref = useRef<HTMLElement>(null)
+  
+  const { scrollYProgress } = useScroll({
+    target: ref,
+    offset: ['start end', 'end start'],
+  })
+
+  const y = useTransform(scrollYProgress, [0, 1], ['0%', '20%'])
+
+  return (
+    <ParallaxSection 
+      className="py-32 px-4" 
+      bgSpeed={0.25}
+      orbColors={['hsl(270, 100%, 65%)', 'hsl(200, 100%, 60%)', 'hsl(330, 100%, 65%)']}
+    >
+      <section ref={ref} className="max-w-5xl mx-auto">
+        {/* Section Header */}
+        <motion.div 
+          className="text-center mb-20"
+          style={{ y }}
+        >
+          <motion.h2
+            initial={{ opacity: 0, y: 40 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+            className="section-heading gradient-text"
+          >
+            PROJECTS
+          </motion.h2>
+        </motion.div>
+
+        {/* Projects Stack */}
+        <div className="space-y-12">
+          {projects.map((project, index) => (
+            <ProjectCard key={project.id} project={project} index={index} />
+          ))}
+        </div>
+      </section>
+    </ParallaxSection>
   )
 }

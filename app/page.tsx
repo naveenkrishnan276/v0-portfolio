@@ -3,14 +3,15 @@
 import { useState, useEffect } from 'react'
 import Header from '@/components/Header'
 import Hero from '@/components/Hero'
-import TechSlider from '@/components/TechSlider'
+import About from '@/components/About'
 import Projects from '@/components/Projects'
 import Skills from '@/components/Skills'
+import Certificates from '@/components/Certificates'
+import WhyHireMe from '@/components/WhyHireMe'
 import Education from '@/components/Education'
 import Contact from '@/components/Contact'
 import SplashScreen from '@/components/SplashScreen'
 import LaserCursor from '@/components/LaserCursor'
-import BackgroundParticles from '@/components/BackgroundParticles'
 
 export default function Page() {
   const [showSplash, setShowSplash] = useState(true)
@@ -25,7 +26,7 @@ export default function Page() {
   // Track active section on scroll
   useEffect(() => {
     const handleScroll = () => {
-      const sections = ['hero', 'projects', 'skills', 'education', 'contact']
+      const sections = ['hero', 'about', 'projects', 'skills', 'certificates', 'whyhireme', 'education', 'contact']
       const scrollPosition = window.scrollY + 200
 
       for (const section of sections) {
@@ -54,33 +55,40 @@ export default function Page() {
         <SplashScreen onComplete={() => setShowSplash(false)} />
       )}
 
-      <main className="min-h-screen bg-background text-foreground">
+      <main className="min-h-screen bg-background text-foreground overflow-x-hidden">
         <Header onNavigate={scrollToSection} activeSection={activeSection} />
         
-        <div id="hero" className="scroll-mt-20">
+        <div id="hero">
           <Hero />
         </div>
 
-        {/* Dynamic Tech Slider */}
-        <TechSlider />
+        <div id="about">
+          <About />
+        </div>
 
-        <div id="projects" className="scroll-mt-20">
+        <div id="projects">
           <Projects />
         </div>
 
-        <div id="skills" className="scroll-mt-20">
+        <div id="skills">
           <Skills />
         </div>
 
-        <div id="education" className="scroll-mt-20">
+        <div id="certificates">
+          <Certificates />
+        </div>
+
+        <div id="whyhireme">
+          <WhyHireMe />
+        </div>
+
+        <div id="education">
           <Education />
         </div>
 
-        <div id="contact" className="scroll-mt-20">
+        <div id="contact">
           <Contact />
         </div>
-
-        <BackgroundParticles />
       </main>
     </>
   )

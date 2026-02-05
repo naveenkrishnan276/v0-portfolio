@@ -1,21 +1,14 @@
 'use client'
 
-import { useEffect, useRef } from 'react'
+import { useRef } from 'react'
+import { motion, useScroll, useTransform } from 'framer-motion'
 import { Calendar, MapPin, GraduationCap, Briefcase } from 'lucide-react'
+import ParallaxSection from './ParallaxSection'
 
 /*
  * ============================================
  * UPDATE YOUR EDUCATION & EXPERIENCE DATA HERE
  * ============================================
- * 
- * Each item needs:
- * - id: unique number
- * - type: 'Education' or 'Work Experience'
- * - title: your degree or job title
- * - institution: school or company name
- * - location: city, state or 'Remote'
- * - startDate: start year
- * - endDate: end year or 'Present'
  */
 const education = [
   {
@@ -29,7 +22,7 @@ const education = [
   },
   {
     id: 2,
-    type: 'Work Experience',
+    type: 'Work',
     title: 'Software Engineer',
     institution: 'Company Name',
     location: 'Remote',
@@ -38,7 +31,7 @@ const education = [
   },
   {
     id: 3,
-    type: 'Work Experience',
+    type: 'Work',
     title: 'Junior Developer',
     institution: 'Previous Company',
     location: 'City, State',
@@ -56,136 +49,134 @@ const education = [
   },
 ]
 
-export default function Education() {
-  const sectionRef = useRef<HTMLElement>(null)
+function TimelineItem({ 
+  item, 
+  index,
+  isLeft
+}: { 
+  item: typeof education[0]
+  index: number
+  isLeft: boolean
+}) {
+  const ref = useRef<HTMLDivElement>(null)
+  
+  const { scrollYProgress } = useScroll({
+    target: ref,
+    offset: ['start end', 'center center'],
+  })
 
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.querySelectorAll('.reveal-up, .reveal-left, .reveal-right').forEach((el, i) => {
-              setTimeout(() => {
-                el.classList.add('revealed')
-              }, i * 150)
-            })
-          }
-        })
-      },
-      { threshold: 0.1 }
-    )
+  const x = useTransform(scrollYProgress, [0, 1], [isLeft ? -80 : 80, 0])
+  const opacity = useTransform(scrollYProgress, [0, 0.5, 1], [0, 0.5, 1])
 
-    if (sectionRef.current) {
-      observer.observe(sectionRef.current)
-    }
-
-    return () => observer.disconnect()
-  }, [])
+  const Icon = item.type === 'Education' ? GraduationCap : Briefcase
+  const isEducation = item.type === 'Education'
 
   return (
-    <section ref={sectionRef} className="py-24 px-4 parallax-section">
-      <div className="max-w-5xl mx-auto">
-        {/* Section Header */}
-        <div className="mb-20 text-center">
-          <h2 className="reveal-up text-4xl sm:text-5xl font-display font-bold gradient-text">
-            Education & Experience
-          </h2>
-        </div>
+    <div className={`relative flex items-center ${isLeft ? 'md:justify-start' : 'md:justify-end'}`}>
+      {/* Timeline node */}
+      <div className="timeline-node hidden md:block" style={{ top: '50%', transform: 'translate(-50%, -50%)' }} />
 
-        {/* Timeline with alternating sides */}
-        <div className="relative">
-          {/* Central pipe/line */}
-          <div className="timeline-pipe hidden md:block" />
-
-          {/* Timeline items */}
-          <div className="space-y-12 md:space-y-0">
-            {education.map((item, index) => {
-              const isLeft = index % 2 === 0
-              const Icon = item.type === 'Education' ? GraduationCap : Briefcase
-
-              return (
-                <div
-                  key={item.id}
-                  className={`relative md:flex md:items-center ${
-                    isLeft ? 'md:justify-start' : 'md:justify-end'
-                  }`}
-                  style={{ marginTop: index === 0 ? 0 : undefined }}
-                >
-                  {/* Timeline node (visible on desktop) */}
-                  <div 
-                    className="timeline-node hidden md:block"
-                    style={{ top: index === 0 ? '2rem' : `${index * 12 + 2}rem` }}
-                  />
-
-                  {/* Content card */}
-                  <div
-                    className={`${isLeft ? 'reveal-left md:pr-16 md:w-1/2' : 'reveal-right md:pl-16 md:w-1/2 md:ml-auto'}`}
-                    style={{ 
-                      position: 'relative',
-                      top: `${index * 12}rem`
-                    }}
-                  >
-                    <div
-                      className={`p-6 rounded-2xl transition-all duration-500 border glass-effect hover:shadow-xl ${
-                        item.type === 'Education'
-                          ? 'hover:border-primary/60 hover:shadow-primary/10'
-                          : 'hover:border-secondary/60 hover:shadow-secondary/10'
-                      }`}
-                    >
-                      {/* Icon and Type Badge */}
-                      <div className="flex items-center gap-3 mb-4">
-                        <div
-                          className={`p-2 rounded-lg ${
-                            item.type === 'Education'
-                              ? 'bg-primary/20 text-primary'
-                              : 'bg-secondary/20 text-secondary'
-                          }`}
-                        >
-                          <Icon className="w-5 h-5" />
-                        </div>
-                        <span
-                          className={`px-3 py-1 text-xs font-semibold rounded-full ${
-                            item.type === 'Education'
-                              ? 'bg-primary/20 text-primary'
-                              : 'bg-secondary/20 text-secondary'
-                          }`}
-                        >
-                          {item.type}
-                        </span>
-                      </div>
-
-                      {/* Title */}
-                      <h3 className="text-xl font-display font-bold text-foreground mb-2">
-                        {item.title}
-                      </h3>
-
-                      {/* Institution */}
-                      <p className="font-semibold text-muted-foreground mb-3">
-                        {item.institution}
-                      </p>
-
-                      {/* Meta info */}
-                      <div className="flex flex-wrap items-center gap-4 text-sm text-muted-foreground">
-                        <span className="flex items-center gap-1">
-                          <Calendar className="w-4 h-4" />
-                          {item.startDate} - {item.endDate}
-                        </span>
-                        <span className="flex items-center gap-1">
-                          <MapPin className="w-4 h-4" />
-                          {item.location}
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              )
-            })}
+      {/* Card */}
+      <motion.div
+        ref={ref}
+        style={{ x, opacity }}
+        className={`w-full md:w-[45%] ${isLeft ? 'md:pr-8' : 'md:pl-8'}`}
+      >
+        <div className={`glass-effect rounded-2xl p-6 border border-transparent hover:border-primary/30 transition-all duration-500 ${
+          isEducation ? 'hover:glow-purple' : 'hover:glow-blue'
+        }`}>
+          {/* Header */}
+          <div className="flex items-center gap-3 mb-4">
+            <div className={`p-2 rounded-lg ${
+              isEducation 
+                ? 'bg-[hsl(270,100%,65%,0.2)] text-[hsl(270,100%,65%)]' 
+                : 'bg-[hsl(200,100%,60%,0.2)] text-[hsl(200,100%,60%)]'
+            }`}>
+              <Icon className="w-5 h-5" />
+            </div>
+            <span className={`text-xs font-semibold uppercase tracking-wider ${
+              isEducation ? 'text-[hsl(270,100%,65%)]' : 'text-[hsl(200,100%,60%)]'
+            }`}>
+              {item.type}
+            </span>
           </div>
 
-          {/* Spacer for absolute positioned items */}
-          <div className="hidden md:block" style={{ height: `${(education.length - 1) * 12 + 8}rem` }} />
+          {/* Title */}
+          <h3 className="text-xl font-semibold text-foreground mb-2">
+            {item.title}
+          </h3>
+
+          {/* Institution */}
+          <p className="text-muted-foreground mb-4">{item.institution}</p>
+
+          {/* Meta */}
+          <div className="flex flex-wrap items-center gap-4 text-sm text-muted-foreground">
+            <span className="flex items-center gap-1">
+              <Calendar className="w-4 h-4" />
+              {item.startDate} - {item.endDate}
+            </span>
+            <span className="flex items-center gap-1">
+              <MapPin className="w-4 h-4" />
+              {item.location}
+            </span>
+          </div>
         </div>
-      </div>
-    </section>
+      </motion.div>
+    </div>
+  )
+}
+
+export default function Education() {
+  const ref = useRef<HTMLElement>(null)
+  
+  const { scrollYProgress } = useScroll({
+    target: ref,
+    offset: ['start end', 'end start'],
+  })
+
+  const y = useTransform(scrollYProgress, [0, 1], ['0%', '20%'])
+
+  return (
+    <ParallaxSection 
+      className="py-32 px-4" 
+      bgSpeed={0.15}
+      orbColors={['hsl(270, 100%, 65%)', 'hsl(200, 100%, 60%)', 'hsl(330, 100%, 65%)']}
+    >
+      <section ref={ref} className="max-w-5xl mx-auto">
+        {/* Section Header */}
+        <motion.div 
+          className="text-center mb-20"
+          style={{ y }}
+        >
+          <motion.h2
+            initial={{ opacity: 0, y: 40 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+            className="section-heading gradient-text"
+          >
+            EXPERIENCE
+          </motion.h2>
+        </motion.div>
+
+        {/* Timeline */}
+        <div className="relative">
+          {/* Central line */}
+          <div className="timeline-pipe hidden md:block" />
+
+          {/* Items */}
+          <div className="space-y-8 md:space-y-12">
+            {education.map((item, index) => (
+              <TimelineItem 
+                key={item.id} 
+                item={item} 
+                index={index}
+                isLeft={index % 2 === 0}
+              />
+            ))}
+          </div>
+        </div>
+      </section>
+    </ParallaxSection>
   )
 }

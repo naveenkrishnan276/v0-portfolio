@@ -1,6 +1,7 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import { motion, AnimatePresence } from 'framer-motion'
 import { Menu, X } from 'lucide-react'
 
 interface HeaderProps {
@@ -10,13 +11,22 @@ interface HeaderProps {
 
 export default function Header({ onNavigate, activeSection }: HeaderProps) {
   const [isOpen, setIsOpen] = useState(false)
+  const [scrolled, setScrolled] = useState(false)
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 50)
+    }
+    window.addEventListener('scroll', handleScroll)
+    return () => window.removeEventListener('scroll', handleScroll)
+  }, [])
 
   const navItems = [
-    { label: 'About', id: 'hero' },
-    { label: 'Projects', id: 'projects' },
-    { label: 'Skills', id: 'skills' },
-    { label: 'Experience', id: 'education' },
-    { label: 'Contact', id: 'contact' },
+    { label: 'ABOUT', id: 'about' },
+    { label: 'PROJECTS', id: 'projects' },
+    { label: 'SKILLS', id: 'skills' },
+    { label: 'EXPERIENCE', id: 'education' },
+    { label: 'CONTACT', id: 'contact' },
   ]
 
   const handleNavClick = (id: string) => {
@@ -25,16 +35,24 @@ export default function Header({ onNavigate, activeSection }: HeaderProps) {
   }
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-40 glass-effect border-b border-border">
+    <motion.header
+      initial={{ y: -100 }}
+      animate={{ y: 0 }}
+      transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
+        scrolled ? 'glass-effect border-b border-border' : ''
+      }`}
+    >
       <nav className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between">
         {/* Logo */}
-        <button onClick={() => handleNavClick('hero')} className="flex items-center gap-2 group">
-          <div className="relative">
-            <div className="px-3 py-1.5 rounded-lg bg-primary text-primary-foreground font-display font-bold text-lg transition-all group-hover:shadow-lg group-hover:shadow-primary/30">
-              {/* UPDATE: Change "YN" to your initials */}
-              YN
-            </div>
-          </div>
+        <button 
+          onClick={() => handleNavClick('hero')} 
+          className="group relative"
+        >
+          <span className="text-2xl font-display font-normal uppercase tracking-wider gradient-text">
+            {/* UPDATE: Change to your initials or name */}
+            YN
+          </span>
         </button>
 
         {/* Desktop Navigation */}
@@ -43,16 +61,16 @@ export default function Header({ onNavigate, activeSection }: HeaderProps) {
             <button
               key={item.id}
               onClick={() => handleNavClick(item.id)}
-              className={`text-sm font-medium transition-all duration-300 relative group ${
+              className={`text-sm font-medium tracking-wider transition-all duration-300 relative group ${
                 activeSection === item.id
                   ? 'text-primary'
                   : 'text-muted-foreground hover:text-foreground'
               }`}
             >
               {item.label}
-              <div
-                className={`absolute -bottom-1 left-0 right-0 h-0.5 bg-primary transition-transform origin-left ${
-                  activeSection === item.id ? 'scale-x-100' : 'scale-x-0 group-hover:scale-x-100'
+              <span
+                className={`absolute -bottom-1 left-0 h-0.5 bg-gradient-to-r from-[hsl(270,100%,65%)] to-[hsl(330,100%,65%)] transition-all duration-300 ${
+                  activeSection === item.id ? 'w-full' : 'w-0 group-hover:w-full'
                 }`}
               />
             </button>
@@ -63,52 +81,55 @@ export default function Header({ onNavigate, activeSection }: HeaderProps) {
         <div className="hidden md:flex">
           <button
             onClick={() => handleNavClick('contact')}
-            className="px-5 py-2 rounded-lg bg-primary text-primary-foreground font-semibold hover:shadow-lg hover:shadow-primary/30 transition-all duration-300 text-sm"
+            className="px-6 py-2.5 rounded-full bg-gradient-to-r from-[hsl(270,100%,65%)] to-[hsl(330,100%,65%)] text-white font-semibold text-sm hover:opacity-90 transition-opacity"
           >
-            Get in Touch
+            Hire Me
           </button>
         </div>
 
         {/* Mobile Menu Button */}
         <button
           onClick={() => setIsOpen(!isOpen)}
-          className="md:hidden p-2 hover:bg-card rounded-lg transition-colors"
+          className="md:hidden p-2 text-foreground"
           aria-label="Toggle menu"
         >
-          {isOpen ? (
-            <X className="w-6 h-6 text-primary" />
-          ) : (
-            <Menu className="w-6 h-6 text-foreground" />
-          )}
+          {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
         </button>
       </nav>
 
       {/* Mobile Navigation */}
-      {isOpen && (
-        <div className="md:hidden bg-card border-t border-border">
-          <div className="max-w-6xl mx-auto px-4 py-4 flex flex-col gap-2">
-            {navItems.map((item) => (
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: 'auto' }}
+            exit={{ opacity: 0, height: 0 }}
+            className="md:hidden glass-effect border-t border-border overflow-hidden"
+          >
+            <div className="max-w-6xl mx-auto px-4 py-4 flex flex-col gap-2">
+              {navItems.map((item) => (
+                <button
+                  key={item.id}
+                  onClick={() => handleNavClick(item.id)}
+                  className={`text-left py-3 px-4 rounded-xl transition-all font-medium tracking-wider ${
+                    activeSection === item.id
+                      ? 'bg-primary/10 text-primary'
+                      : 'text-muted-foreground hover:text-foreground hover:bg-muted/20'
+                  }`}
+                >
+                  {item.label}
+                </button>
+              ))}
               <button
-                key={item.id}
-                onClick={() => handleNavClick(item.id)}
-                className={`text-left py-3 px-4 rounded-lg transition-all ${
-                  activeSection === item.id
-                    ? 'bg-primary/10 text-primary font-semibold'
-                    : 'text-muted-foreground hover:text-foreground hover:bg-card/80'
-                }`}
+                onClick={() => handleNavClick('contact')}
+                className="w-full mt-2 px-6 py-3 rounded-full bg-gradient-to-r from-[hsl(270,100%,65%)] to-[hsl(330,100%,65%)] text-white font-semibold"
               >
-                {item.label}
+                Hire Me
               </button>
-            ))}
-            <button
-              onClick={() => handleNavClick('contact')}
-              className="w-full mt-2 px-6 py-3 rounded-lg bg-primary text-primary-foreground font-semibold"
-            >
-              Get in Touch
-            </button>
-          </div>
-        </div>
-      )}
-    </header>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </motion.header>
   )
 }

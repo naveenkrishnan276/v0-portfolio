@@ -1,6 +1,6 @@
 import React from "react"
 import type { Metadata } from 'next'
-import { Inter, Space_Grotesk } from 'next/font/google'
+import { Inter, Bebas_Neue } from 'next/font/google'
 
 import './globals.css'
 
@@ -9,14 +9,15 @@ const inter = Inter({
   variable: '--font-inter'
 })
 
-const spaceGrotesk = Space_Grotesk({ 
+const bebasNeue = Bebas_Neue({ 
   subsets: ['latin'],
-  variable: '--font-space-grotesk'
+  weight: '400',
+  variable: '--font-bebas'
 })
 
 export const metadata: Metadata = {
-  title: 'Your Name | Developer Portfolio',
-  description: 'Full-stack developer portfolio showcasing projects, skills, and experience.',
+  title: 'Your Name | Creative Developer',
+  description: 'Premium portfolio showcasing creative development work, skills, and experience.',
   generator: 'v0.app',
 }
 
@@ -26,7 +27,7 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en" className={`${inter.variable} ${spaceGrotesk.variable}`}>
+    <html lang="en" className={`${inter.variable} ${bebasNeue.variable}`}>
       <body className="font-sans antialiased">{children}</body>
     </html>
   )
