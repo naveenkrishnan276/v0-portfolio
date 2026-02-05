@@ -1,39 +1,35 @@
-import { ExternalLink, Github } from 'lucide-react'
+import { ExternalLink, Github, ArrowRight } from 'lucide-react'
 
 const projects = [
   {
     id: 1,
-    title: 'AI Fitness Tracker',
-    description: 'Real-time workout tracking with AI-powered form analysis using computer vision.',
-    tech: ['React', 'FastAPI', 'PostgreSQL', 'OpenCV'],
-    image: 'bg-gradient-to-br from-primary to-primary/50',
+    title: 'Sentiment Analysis Engine',
+    description: 'NLP-based sentiment analysis tool processing real-time social media data with 94% accuracy.',
+    tech: ['Python', 'TensorFlow', 'FastAPI', 'PostgreSQL'],
     link: '#',
     github: '#',
   },
   {
     id: 2,
-    title: 'Code Collaboration Hub',
-    description: 'Real-time collaborative code editor with live syntax highlighting and pair programming features.',
-    tech: ['Next.js', 'WebSockets', 'TypeScript', 'Tailwind'],
-    image: 'bg-gradient-to-br from-secondary to-secondary/50',
+    title: 'Image Classification System',
+    description: 'Deep learning model for image recognition with transfer learning, achieving state-of-the-art accuracy.',
+    tech: ['PyTorch', 'ResNet', 'FastAPI', 'Next.js'],
     link: '#',
     github: '#',
   },
   {
     id: 3,
-    title: 'Workout Social Network',
-    description: 'Social platform for fitness enthusiasts to share routines, progress, and connect with others.',
-    tech: ['React', 'Node.js', 'MongoDB', 'Socket.io'],
-    image: 'bg-gradient-to-br from-primary via-secondary to-primary',
+    title: 'Predictive Analytics Dashboard',
+    description: 'Time series forecasting dashboard for financial market predictions using LSTM networks.',
+    tech: ['React', 'FastAPI', 'PostgreSQL', 'Recharts'],
     link: '#',
     github: '#',
   },
   {
     id: 4,
-    title: 'DevDash Analytics',
-    description: 'Advanced analytics dashboard for tracking development metrics and team productivity.',
-    tech: ['Next.js', 'FastAPI', 'PostgreSQL', 'Recharts'],
-    image: 'bg-gradient-to-br from-secondary via-primary to-secondary',
+    title: 'Recommendation Engine',
+    description: 'Collaborative filtering ML model providing personalized recommendations with real-time user analytics.',
+    tech: ['Python', 'Scikit-learn', 'FastAPI', 'MongoDB'],
     link: '#',
     github: '#',
   },
@@ -44,11 +40,9 @@ export default function Projects() {
     <section className="py-20 px-4">
       <div className="max-w-7xl mx-auto">
         {/* Section Header */}
-        <div className="mb-16 text-center">
-          <h2 className="text-4xl sm:text-5xl font-bold mb-4">
-            <span className="bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
-              Featured Projects
-            </span>
+        <div className="mb-16 text-center scroll-fade-in">
+          <h2 className="text-4xl sm:text-5xl font-bold mb-4 gradient-text">
+            Featured Projects
           </h2>
           <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
             Showcasing my best work combining cutting-edge technology with clean, scalable architecture.
@@ -60,18 +54,16 @@ export default function Projects() {
           {projects.map((project, index) => (
             <div
               key={project.id}
-              className="group relative rounded-2xl overflow-hidden bg-card border border-border hover:border-primary/50 transition-all duration-300 hover:shadow-lg hover:shadow-primary/20 animate-in fade-in slide-in-from-bottom-4"
-              style={{ animationDelay: `${index * 100}ms` }}
+              className="glass-effect group relative rounded-2xl overflow-hidden hover:border-primary/80 transition-all duration-300 hover:shadow-lg hover:shadow-primary/30 scroll-fade-in"
+              style={{ animationDelay: `${index * 150}ms` }}
             >
-              {/* Project Image/Background */}
-              <div className={`h-48 ${project.image} relative overflow-hidden`}>
-                <div className="absolute inset-0 bg-gradient-to-t from-card to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                  <div className="text-white/50">
-                    <svg className="w-16 h-16" fill="currentColor" viewBox="0 0 20 20">
-                      <path d="M11 3a1 1 0 10-2 0v1a1 1 0 102 0V3zM15.657 5.757a1 1 0 00-1.414-1.414l-.707.707a1 1 0 001.414 1.414l.707-.707zM18 10a1 1 0 01-1 1h-1a1 1 0 110-2h1a1 1 0 011 1zM16.243 15.657a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414l.707.707zM10 18a1 1 0 01-1-1v-1a1 1 0 112 0v1a1 1 0 01-1 1zM5.757 16.243a1 1 0 00-1.414-1.414l-.707.707a1 1 0 001.414 1.414l.707-.707zM4 10a1 1 0 01-1-1V8a1 1 0 112 0v1a1 1 0 01-1 1zM5.757 5.757a1 1 0 000-1.414L5.05 3.636a1 1 0 10-1.414 1.414l.707.707z" />
-                    </svg>
-                  </div>
+              {/* Project Icon Background */}
+              <div className="h-32 relative overflow-hidden flex items-center justify-center">
+                <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-secondary/20" />
+                <div className="relative z-10 text-primary/60 group-hover:text-primary transition-colors">
+                  <svg className="w-12 h-12" fill="currentColor" viewBox="0 0 20 20">
+                    <path d="M11 3a1 1 0 10-2 0v1a1 1 0 102 0V3zM15.657 5.757a1 1 0 00-1.414-1.414l-.707.707a1 1 0 001.414 1.414l.707-.707zM18 10a1 1 0 01-1 1h-1a1 1 0 110-2h1a1 1 0 011 1zM16.243 15.657a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414l.707.707zM10 18a1 1 0 01-1-1v-1a1 1 0 112 0v1a1 1 0 01-1 1zM5.757 16.243a1 1 0 00-1.414-1.414l-.707.707a1 1 0 001.414 1.414l.707-.707zM4 10a1 1 0 01-1-1V8a1 1 0 112 0v1a1 1 0 01-1 1zM5.757 5.757a1 1 0 000-1.414L5.05 3.636a1 1 0 10-1.414 1.414l.707.707z" />
+                  </svg>
                 </div>
               </div>
 
@@ -132,5 +124,3 @@ export default function Projects() {
     </section>
   )
 }
-
-import { ArrowRight } from 'lucide-react'

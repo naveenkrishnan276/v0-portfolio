@@ -1,58 +1,56 @@
 'use client'
 
 import { useState } from 'react'
-import { Code2, Database, Palette, Server, Zap, Cloud } from 'lucide-react'
+import { Code2, Database, Brain, Server, Zap, Cloud } from 'lucide-react'
 
 const skillCategories = [
   {
-    id: 'frontend',
-    name: 'Frontend Development',
-    icon: Palette,
-    skills: ['React', 'Next.js', 'TypeScript', 'Tailwind CSS', 'Framer Motion', 'Three.js'],
+    id: 'ml',
+    name: 'Machine Learning',
+    icon: Brain,
+    skills: ['TensorFlow', 'PyTorch', 'Scikit-learn', 'NLP', 'Computer Vision', 'Deep Learning'],
+  },
+  {
+    id: 'data',
+    name: 'Data Science',
+    icon: Zap,
+    skills: ['Pandas', 'NumPy', 'Data Analysis', 'Visualization', 'Feature Engineering', 'Statistics'],
   },
   {
     id: 'backend',
     name: 'Backend & APIs',
     icon: Server,
-    skills: ['FastAPI', 'Django', 'Node.js', 'Express', 'REST APIs', 'GraphQL'],
+    skills: ['FastAPI', 'Python', 'PostgreSQL', 'REST APIs', 'MongoDB', 'GraphQL'],
   },
   {
-    id: 'database',
-    name: 'Databases',
-    icon: Database,
-    skills: ['PostgreSQL', 'MongoDB', 'Redis', 'Firebase', 'Supabase', 'SQL'],
-  },
-  {
-    id: 'devops',
-    name: 'DevOps & Tools',
-    icon: Cloud,
-    skills: ['Docker', 'Git', 'CI/CD', 'Vercel', 'AWS', 'Linux'],
+    id: 'frontend',
+    name: 'Full Stack',
+    icon: Code2,
+    skills: ['React', 'Next.js', 'TypeScript', 'Tailwind CSS', 'Web Development', 'UI/UX'],
   },
 ]
 
 const certifications = [
-  { id: 1, title: 'AWS Solutions Architect', issuer: 'Amazon Web Services', year: '2024' },
-  { id: 2, title: 'Full Stack Web Developer', issuer: 'freeCodeCamp', year: '2023' },
-  { id: 3, title: 'React Advanced Patterns', issuer: 'egghead.io', year: '2023' },
-  { id: 4, title: 'Data Structures & Algorithms', issuer: 'Coursera', year: '2022' },
-  { id: 5, title: 'Python Professional', issuer: 'DataCamp', year: '2022' },
+  { id: 1, title: 'Machine Learning Specialization', issuer: 'Coursera', year: '2024' },
+  { id: 2, title: 'Deep Learning Advanced', issuer: 'fast.ai', year: '2023' },
+  { id: 3, title: 'Data Science Professional', issuer: 'DataCamp', year: '2023' },
+  { id: 4, title: 'Python Advanced Programming', issuer: 'Udacity', year: '2022' },
+  { id: 5, title: 'Full Stack Web Developer', issuer: 'freeCodeCamp', year: '2022' },
 ]
 
 export default function Skills() {
-  const [selectedCategory, setSelectedCategory] = useState('frontend')
+  const [selectedCategory, setSelectedCategory] = useState('ml')
 
   return (
     <section className="py-20 px-4">
       <div className="max-w-7xl mx-auto">
         {/* Section Header */}
-        <div className="mb-16 text-center">
-          <h2 className="text-4xl sm:text-5xl font-bold mb-4">
-            <span className="bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
-              Skills & Expertise
-            </span>
+        <div className="mb-16 text-center scroll-fade-in">
+          <h2 className="text-4xl sm:text-5xl font-bold mb-4 gradient-text">
+            Skills & Expertise
           </h2>
           <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-            A comprehensive toolkit of modern technologies and best practices.
+            ML & Data Science expertise combined with full-stack development capabilities.
           </p>
         </div>
 

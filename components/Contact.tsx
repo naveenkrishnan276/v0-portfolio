@@ -64,21 +64,19 @@ export default function Contact() {
     <section className="py-20 px-4 border-t border-border">
       <div className="max-w-4xl mx-auto">
         {/* Section Header */}
-        <div className="mb-16 text-center">
-          <h2 className="text-4xl sm:text-5xl font-bold mb-4">
-            <span className="bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
-              Let&apos;s Work Together
-            </span>
+        <div className="mb-16 text-center scroll-fade-in">
+          <h2 className="text-4xl sm:text-5xl font-bold mb-4 gradient-text">
+            Let&apos;s Collaborate
           </h2>
           <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-            I&apos;m always interested in hearing about new projects and opportunities.
+            Interested in AI/ML projects? Let&apos;s connect and build something amazing together.
           </p>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
           {/* Contact Form */}
-          <div className="animate-in fade-in slide-in-from-left-4">
-            <form onSubmit={handleSubmit} className="space-y-6">
+          <div className="scroll-fade-in">
+            <form onSubmit={handleSubmit} className="space-y-6 glass-effect p-6 rounded-2xl">
               <div>
                 <label htmlFor="name" className="block text-sm font-semibold text-foreground mb-2">
                   Your Name

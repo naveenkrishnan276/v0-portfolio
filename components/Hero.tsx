@@ -1,43 +1,38 @@
-import { ArrowRight, Dumbbell, Code } from 'lucide-react'
+import { ArrowRight, Brain, Zap } from 'lucide-react'
 
 export default function Hero() {
   return (
     <section className="min-h-screen flex items-center justify-center pt-20 px-4 relative overflow-hidden">
-      {/* Grid background */}
-      <div className="absolute inset-0 bg-grid-pattern opacity-5" />
-
       <div className="max-w-4xl mx-auto z-10">
-        <div className="text-center mb-12 animate-in fade-in slide-in-from-bottom-8 duration-700">
+        <div className="text-center mb-12 scroll-fade-in">
           {/* Name and Title */}
           <div className="mb-8">
-            <h1 className="text-5xl sm:text-7xl font-bold mb-4 text-balance">
-              <span className="bg-gradient-to-r from-primary via-secondary to-primary bg-clip-text text-transparent">
-                Your Name
-              </span>
+            <h1 className="text-5xl sm:text-7xl font-bold mb-4 text-balance gradient-text">
+              Your Name
             </h1>
             <p className="text-xl sm:text-2xl text-muted-foreground mb-2">
-              Full Stack Developer &amp; Fitness Enthusiast
+              ML Engineer &amp; Full Stack Developer
             </p>
           </div>
 
-          {/* Stats */}
+          {/* Stats with glass effect */}
           <div className="flex flex-col sm:flex-row gap-6 justify-center mb-12">
-            <div className="group px-6 py-4 rounded-xl bg-card border border-primary/20 hover:border-primary/50 transition-all duration-300 hover:shadow-lg hover:shadow-primary/10">
+            <div className="glass-effect group px-6 py-4 rounded-xl hover:border-primary/50 transition-all duration-300">
               <div className="flex items-center gap-3 justify-center">
-                <Code className="w-5 h-5 text-primary" />
+                <Brain className="w-5 h-5 text-primary" />
                 <div className="text-left">
-                  <p className="text-xs text-muted-foreground">Projects Built</p>
-                  <p className="text-2xl font-bold">12+</p>
+                  <p className="text-xs text-muted-foreground">ML Models</p>
+                  <p className="text-2xl font-bold">8+</p>
                 </div>
               </div>
             </div>
 
-            <div className="group px-6 py-4 rounded-xl bg-card border border-secondary/20 hover:border-secondary/50 transition-all duration-300 hover:shadow-lg hover:shadow-secondary/10">
+            <div className="glass-effect group px-6 py-4 rounded-xl hover:border-secondary/50 transition-all duration-300">
               <div className="flex items-center gap-3 justify-center">
-                <Dumbbell className="w-5 h-5 text-secondary" />
+                <Zap className="w-5 h-5 text-secondary" />
                 <div className="text-left">
-                  <p className="text-xs text-muted-foreground">Certifications</p>
-                  <p className="text-2xl font-bold">5+</p>
+                  <p className="text-xs text-muted-foreground">Projects</p>
+                  <p className="text-2xl font-bold">15+</p>
                 </div>
               </div>
             </div>
@@ -45,8 +40,8 @@ export default function Hero() {
 
           {/* Description */}
           <p className="text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed mb-12 text-balance">
-            I craft high-performance web applications combining modern development practices with clean, scalable architecture. 
-            When I&apos;m not coding, you&apos;ll find me hitting the gym or exploring new technologies.
+            Building intelligent systems and scalable applications using machine learning and modern web technologies. 
+            Passionate about transforming data into insights and creating intuitive user experiences through full-stack development.
           </p>
 
           {/* CTA Buttons */}
@@ -61,7 +56,7 @@ export default function Hero() {
 
             <a
               href="#contact"
-              className="px-8 py-4 rounded-lg border-2 border-primary text-primary font-semibold hover:bg-primary/10 transition-all duration-300 hover:-translate-y-1"
+              className="glass-effect px-8 py-4 rounded-lg text-primary font-semibold transition-all duration-300 hover:-translate-y-1"
             >
               Let&apos;s Connect
             </a>
@@ -75,10 +70,6 @@ export default function Hero() {
           </div>
         </div>
       </div>
-
-      {/* Accent elements */}
-      <div className="absolute top-1/4 -right-20 w-40 h-40 rounded-full border-2 border-primary/20 opacity-50 animate-pulse" />
-      <div className="absolute bottom-1/4 -left-20 w-40 h-40 rounded-full border-2 border-secondary/20 opacity-50 animate-pulse" />
     </section>
   )
 }

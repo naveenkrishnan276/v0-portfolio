@@ -4,46 +4,46 @@ const education = [
   {
     id: 1,
     type: 'Education',
-    title: 'Bachelor of Computer Science',
+    title: 'Bachelor of Computer Science & AI',
     institution: 'Tech University',
     location: 'San Francisco, CA',
     startDate: '2019',
     endDate: '2023',
-    description: 'GPA: 3.8/4.0. Specialized in Full Stack Development and Cloud Architecture.',
-    highlights: ['Dean\'s List', 'Hackathon Winner 2022', 'Teaching Assistant'],
+    description: 'GPA: 3.8/4.0. Specialized in Machine Learning, Data Science, and Full Stack Development.',
+    highlights: ['Dean\'s List', 'AI Research Published', 'Teaching Assistant'],
   },
   {
     id: 2,
     type: 'Work Experience',
-    title: 'Senior Full Stack Developer',
-    institution: 'Tech Startup Inc',
+    title: 'ML Engineer',
+    institution: 'AI Tech Company',
     location: 'Remote',
     startDate: '2023',
     endDate: 'Present',
-    description: 'Leading development of scalable web applications serving 100k+ users. Mentoring junior developers.',
-    highlights: ['Led product redesign', '40% performance improvement', '3x user growth'],
+    description: 'Building production ML systems processing millions of data points. Developing NLP and computer vision models.',
+    highlights: ['94% model accuracy', '10x inference speed', 'Team lead'],
   },
   {
     id: 3,
     type: 'Work Experience',
-    title: 'Full Stack Developer',
-    institution: 'Web Solutions Agency',
+    title: 'Data Scientist',
+    institution: 'Analytics Startup',
     location: 'New York, NY',
     startDate: '2022',
     endDate: '2023',
-    description: 'Developed custom web solutions for Fortune 500 companies. Built real-time collaboration features.',
-    highlights: ['5 client projects', 'React expertise', 'Team lead role'],
+    description: 'Developed predictive models and data pipelines for enterprise clients. Implemented ML workflows.',
+    highlights: ['5 ML models', 'Python expertise', 'Full stack ML'],
   },
   {
     id: 4,
     type: 'Education',
-    title: 'Cloud Architecture Specialization',
-    institution: 'Coursera / AWS',
+    title: 'Deep Learning Specialization',
+    institution: 'Coursera / Deep Learning',
     location: 'Online',
     startDate: '2023',
     endDate: '2024',
-    description: 'Comprehensive course on designing and deploying cloud-native applications on AWS infrastructure.',
-    highlights: ['AWS Certified', 'Project portfolio', 'Best practices'],
+    description: 'Advanced deep learning with focus on neural networks, CNNs, RNNs, and transformers.',
+    highlights: ['TensorFlow certified', 'Project portfolio', 'State-of-art practices'],
   },
 ]
 
@@ -52,14 +52,12 @@ export default function Education() {
     <section className="py-20 px-4">
       <div className="max-w-4xl mx-auto">
         {/* Section Header */}
-        <div className="mb-16 text-center">
-          <h2 className="text-4xl sm:text-5xl font-bold mb-4">
-            <span className="bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
-              Education & Experience
-            </span>
+        <div className="mb-16 text-center scroll-fade-in">
+          <h2 className="text-4xl sm:text-5xl font-bold mb-4 gradient-text">
+            Education & Experience
           </h2>
           <p className="text-muted-foreground text-lg">
-            A journey of continuous learning and professional growth.
+            A journey of continuous learning and professional growth in AI and ML.
           </p>
         </div>
 
