@@ -1,165 +1,189 @@
-import { Calendar, MapPin, Star } from 'lucide-react'
+'use client'
 
+import { useEffect, useRef } from 'react'
+import { Calendar, MapPin, GraduationCap, Briefcase } from 'lucide-react'
+
+/*
+ * ============================================
+ * UPDATE YOUR EDUCATION & EXPERIENCE DATA HERE
+ * ============================================
+ * 
+ * Each item needs:
+ * - id: unique number
+ * - type: 'Education' or 'Work Experience'
+ * - title: your degree or job title
+ * - institution: school or company name
+ * - location: city, state or 'Remote'
+ * - startDate: start year
+ * - endDate: end year or 'Present'
+ */
 const education = [
   {
     id: 1,
     type: 'Education',
-    title: 'Bachelor of Computer Science & AI',
-    institution: 'Tech University',
-    location: 'San Francisco, CA',
+    title: 'Bachelor of Computer Science',
+    institution: 'University Name',
+    location: 'City, State',
     startDate: '2019',
     endDate: '2023',
-    description: 'GPA: 3.8/4.0. Specialized in Machine Learning, Data Science, and Full Stack Development.',
-    highlights: ['Dean\'s List', 'AI Research Published', 'Teaching Assistant'],
   },
   {
     id: 2,
     type: 'Work Experience',
-    title: 'ML Engineer',
-    institution: 'AI Tech Company',
+    title: 'Software Engineer',
+    institution: 'Company Name',
     location: 'Remote',
     startDate: '2023',
     endDate: 'Present',
-    description: 'Building production ML systems processing millions of data points. Developing NLP and computer vision models.',
-    highlights: ['94% model accuracy', '10x inference speed', 'Team lead'],
   },
   {
     id: 3,
     type: 'Work Experience',
-    title: 'Data Scientist',
-    institution: 'Analytics Startup',
-    location: 'New York, NY',
+    title: 'Junior Developer',
+    institution: 'Previous Company',
+    location: 'City, State',
     startDate: '2022',
     endDate: '2023',
-    description: 'Developed predictive models and data pipelines for enterprise clients. Implemented ML workflows.',
-    highlights: ['5 ML models', 'Python expertise', 'Full stack ML'],
   },
   {
     id: 4,
     type: 'Education',
-    title: 'Deep Learning Specialization',
-    institution: 'Coursera / Deep Learning',
+    title: 'Professional Certificate',
+    institution: 'Online Platform',
     location: 'Online',
     startDate: '2023',
     endDate: '2024',
-    description: 'Advanced deep learning with focus on neural networks, CNNs, RNNs, and transformers.',
-    highlights: ['TensorFlow certified', 'Project portfolio', 'State-of-art practices'],
   },
 ]
 
 export default function Education() {
+  const sectionRef = useRef<HTMLElement>(null)
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.querySelectorAll('.reveal-up, .reveal-left, .reveal-right').forEach((el, i) => {
+              setTimeout(() => {
+                el.classList.add('revealed')
+              }, i * 150)
+            })
+          }
+        })
+      },
+      { threshold: 0.1 }
+    )
+
+    if (sectionRef.current) {
+      observer.observe(sectionRef.current)
+    }
+
+    return () => observer.disconnect()
+  }, [])
+
   return (
-    <section className="py-20 px-4">
-      <div className="max-w-4xl mx-auto">
+    <section ref={sectionRef} className="py-24 px-4 parallax-section">
+      <div className="max-w-5xl mx-auto">
         {/* Section Header */}
-        <div className="mb-16 text-center scroll-fade-in">
-          <h2 className="text-4xl sm:text-5xl font-bold mb-4 gradient-text">
+        <div className="mb-20 text-center">
+          <h2 className="reveal-up text-4xl sm:text-5xl font-display font-bold gradient-text">
             Education & Experience
           </h2>
-          <p className="text-muted-foreground text-lg">
-            A journey of continuous learning and professional growth in AI and ML.
-          </p>
         </div>
 
-        {/* Timeline */}
-        <div className="space-y-0">
-          {education.map((item, index) => (
-            <div key={item.id} className="relative group">
-              {/* Timeline line */}
-              {index !== education.length - 1 && (
-                <div className="absolute left-8 top-32 bottom-0 w-0.5 bg-gradient-to-b from-primary/50 to-transparent" />
-              )}
+        {/* Timeline with alternating sides */}
+        <div className="relative">
+          {/* Central pipe/line */}
+          <div className="timeline-pipe hidden md:block" />
 
-              {/* Timeline item */}
-              <div className="flex gap-6 pb-12 animate-in fade-in slide-in-from-left-4" style={{ animationDelay: `${index * 100}ms` }}>
-                {/* Timeline dot */}
-                <div className="relative flex flex-col items-center mt-2">
-                  <div className="w-4 h-4 rounded-full border-2 border-primary bg-background group-hover:scale-150 transition-transform duration-300" />
-                  <div className="absolute inset-0 rounded-full border-2 border-primary/30 animate-pulse group-hover:animate-none" style={{ width: '16px', height: '16px' }} />
-                </div>
+          {/* Timeline items */}
+          <div className="space-y-12 md:space-y-0">
+            {education.map((item, index) => {
+              const isLeft = index % 2 === 0
+              const Icon = item.type === 'Education' ? GraduationCap : Briefcase
 
-                {/* Content */}
-                <div className="flex-1 group/card">
-                  <div className={`p-6 rounded-2xl transition-all duration-300 border ${
-                    item.type === 'Education'
-                      ? 'bg-primary/5 border-primary/20 hover:border-primary/60 hover:shadow-lg hover:shadow-primary/20'
-                      : 'bg-secondary/5 border-secondary/20 hover:border-secondary/60 hover:shadow-lg hover:shadow-secondary/20'
-                  }`}>
-                    {/* Badge */}
-                    <div className="flex items-center gap-2 mb-3">
-                      <span className={`px-3 py-1 text-xs font-semibold rounded-full ${
+              return (
+                <div
+                  key={item.id}
+                  className={`relative md:flex md:items-center ${
+                    isLeft ? 'md:justify-start' : 'md:justify-end'
+                  }`}
+                  style={{ marginTop: index === 0 ? 0 : undefined }}
+                >
+                  {/* Timeline node (visible on desktop) */}
+                  <div 
+                    className="timeline-node hidden md:block"
+                    style={{ top: index === 0 ? '2rem' : `${index * 12 + 2}rem` }}
+                  />
+
+                  {/* Content card */}
+                  <div
+                    className={`${isLeft ? 'reveal-left md:pr-16 md:w-1/2' : 'reveal-right md:pl-16 md:w-1/2 md:ml-auto'}`}
+                    style={{ 
+                      position: 'relative',
+                      top: `${index * 12}rem`
+                    }}
+                  >
+                    <div
+                      className={`p-6 rounded-2xl transition-all duration-500 border glass-effect hover:shadow-xl ${
                         item.type === 'Education'
-                          ? 'bg-primary/20 text-primary'
-                          : 'bg-secondary/20 text-secondary'
-                      }`}>
-                        {item.type}
-                      </span>
-                      <span className="text-xs text-muted-foreground flex items-center gap-1">
-                        <Calendar className="w-3 h-3" />
-                        {item.startDate} - {item.endDate}
-                      </span>
-                    </div>
-
-                    {/* Title */}
-                    <h3 className="text-xl font-bold text-foreground mb-1 group-hover/card:text-primary transition-colors">
-                      {item.title}
-                    </h3>
-
-                    {/* Institution */}
-                    <div className="flex items-center gap-2 mb-3 text-muted-foreground">
-                      <span className="font-semibold">{item.institution}</span>
-                      <span className="text-xs flex items-center gap-1">
-                        <MapPin className="w-3 h-3" />
-                        {item.location}
-                      </span>
-                    </div>
-
-                    {/* Description */}
-                    <p className="text-sm text-muted-foreground mb-4">
-                      {item.description}
-                    </p>
-
-                    {/* Highlights */}
-                    <div className="flex flex-wrap gap-2">
-                      {item.highlights.map((highlight) => (
+                          ? 'hover:border-primary/60 hover:shadow-primary/10'
+                          : 'hover:border-secondary/60 hover:shadow-secondary/10'
+                      }`}
+                    >
+                      {/* Icon and Type Badge */}
+                      <div className="flex items-center gap-3 mb-4">
                         <div
-                          key={highlight}
-                          className="flex items-center gap-1 px-3 py-1 rounded-full text-xs font-medium bg-background border border-border hover:border-primary/50 transition-all"
+                          className={`p-2 rounded-lg ${
+                            item.type === 'Education'
+                              ? 'bg-primary/20 text-primary'
+                              : 'bg-secondary/20 text-secondary'
+                          }`}
                         >
-                          <Star className="w-3 h-3 text-primary" />
-                          {highlight}
+                          <Icon className="w-5 h-5" />
                         </div>
-                      ))}
+                        <span
+                          className={`px-3 py-1 text-xs font-semibold rounded-full ${
+                            item.type === 'Education'
+                              ? 'bg-primary/20 text-primary'
+                              : 'bg-secondary/20 text-secondary'
+                          }`}
+                        >
+                          {item.type}
+                        </span>
+                      </div>
+
+                      {/* Title */}
+                      <h3 className="text-xl font-display font-bold text-foreground mb-2">
+                        {item.title}
+                      </h3>
+
+                      {/* Institution */}
+                      <p className="font-semibold text-muted-foreground mb-3">
+                        {item.institution}
+                      </p>
+
+                      {/* Meta info */}
+                      <div className="flex flex-wrap items-center gap-4 text-sm text-muted-foreground">
+                        <span className="flex items-center gap-1">
+                          <Calendar className="w-4 h-4" />
+                          {item.startDate} - {item.endDate}
+                        </span>
+                        <span className="flex items-center gap-1">
+                          <MapPin className="w-4 h-4" />
+                          {item.location}
+                        </span>
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
-            </div>
-          ))}
-        </div>
-
-        {/* Additional Info */}
-        <div className="mt-16 p-8 rounded-2xl bg-card border border-border">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div className="text-center">
-              <div className="text-4xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent mb-2">
-                5+
-              </div>
-              <p className="text-muted-foreground">Years of Experience</p>
-            </div>
-            <div className="text-center border-l border-r border-border">
-              <div className="text-4xl font-bold bg-gradient-to-r from-secondary to-primary bg-clip-text text-transparent mb-2">
-                20+
-              </div>
-              <p className="text-muted-foreground">Projects Completed</p>
-            </div>
-            <div className="text-center">
-              <div className="text-4xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent mb-2">
-                50+
-              </div>
-              <p className="text-muted-foreground">Clients Satisfied</p>
-            </div>
+              )
+            })}
           </div>
+
+          {/* Spacer for absolute positioned items */}
+          <div className="hidden md:block" style={{ height: `${(education.length - 1) * 12 + 8}rem` }} />
         </div>
       </div>
     </section>

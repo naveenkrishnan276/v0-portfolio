@@ -1,8 +1,9 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Header from '@/components/Header'
 import Hero from '@/components/Hero'
+import TechSlider from '@/components/TechSlider'
 import Projects from '@/components/Projects'
 import Skills from '@/components/Skills'
 import Education from '@/components/Education'
@@ -21,6 +22,30 @@ export default function Page() {
     element?.scrollIntoView({ behavior: 'smooth' })
   }
 
+  // Track active section on scroll
+  useEffect(() => {
+    const handleScroll = () => {
+      const sections = ['hero', 'projects', 'skills', 'education', 'contact']
+      const scrollPosition = window.scrollY + 200
+
+      for (const section of sections) {
+        const element = document.getElementById(section)
+        if (element) {
+          const offsetTop = element.offsetTop
+          const offsetHeight = element.offsetHeight
+
+          if (scrollPosition >= offsetTop && scrollPosition < offsetTop + offsetHeight) {
+            setActiveSection(section)
+            break
+          }
+        }
+      }
+    }
+
+    window.addEventListener('scroll', handleScroll)
+    return () => window.removeEventListener('scroll', handleScroll)
+  }, [])
+
   return (
     <>
       <LaserCursor />
@@ -29,12 +54,15 @@ export default function Page() {
         <SplashScreen onComplete={() => setShowSplash(false)} />
       )}
 
-      <main className="min-h-screen bg-black text-foreground">
+      <main className="min-h-screen bg-background text-foreground">
         <Header onNavigate={scrollToSection} activeSection={activeSection} />
         
         <div id="hero" className="scroll-mt-20">
           <Hero />
         </div>
+
+        {/* Dynamic Tech Slider */}
+        <TechSlider />
 
         <div id="projects" className="scroll-mt-20">
           <Projects />

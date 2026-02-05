@@ -1,63 +1,87 @@
 'use client'
 
-import { useState } from 'react'
-import { Code2, Database, Brain, Server, Zap, Cloud } from 'lucide-react'
+import { useEffect, useRef, useState } from 'react'
+import { Code2, Database, Server, Palette, Cloud, Terminal } from 'lucide-react'
 
+/*
+ * ============================================
+ * UPDATE YOUR SKILLS DATA HERE
+ * ============================================
+ * 
+ * Each category needs:
+ * - id: unique string identifier
+ * - name: category display name
+ * - icon: Lucide icon component
+ * - skills: array of skill names
+ */
 const skillCategories = [
   {
-    id: 'ml',
-    name: 'Machine Learning',
-    icon: Brain,
-    skills: ['TensorFlow', 'PyTorch', 'Scikit-learn', 'NLP', 'Computer Vision', 'Deep Learning'],
-  },
-  {
-    id: 'data',
-    name: 'Data Science',
-    icon: Zap,
-    skills: ['Pandas', 'NumPy', 'Data Analysis', 'Visualization', 'Feature Engineering', 'Statistics'],
+    id: 'frontend',
+    name: 'Frontend',
+    icon: Palette,
+    skills: ['React', 'Next.js', 'TypeScript', 'Tailwind CSS', 'HTML/CSS', 'JavaScript'],
   },
   {
     id: 'backend',
-    name: 'Backend & APIs',
+    name: 'Backend',
     icon: Server,
-    skills: ['FastAPI', 'Python', 'PostgreSQL', 'REST APIs', 'MongoDB', 'GraphQL'],
+    skills: ['Node.js', 'Python', 'Express', 'FastAPI', 'REST APIs', 'GraphQL'],
   },
   {
-    id: 'frontend',
-    name: 'Full Stack',
-    icon: Code2,
-    skills: ['React', 'Next.js', 'TypeScript', 'Tailwind CSS', 'Web Development', 'UI/UX'],
+    id: 'database',
+    name: 'Database',
+    icon: Database,
+    skills: ['PostgreSQL', 'MongoDB', 'Redis', 'Prisma', 'Supabase', 'Firebase'],
   },
-]
-
-const certifications = [
-  { id: 1, title: 'Machine Learning Specialization', issuer: 'Coursera', year: '2024' },
-  { id: 2, title: 'Deep Learning Advanced', issuer: 'fast.ai', year: '2023' },
-  { id: 3, title: 'Data Science Professional', issuer: 'DataCamp', year: '2023' },
-  { id: 4, title: 'Python Advanced Programming', issuer: 'Udacity', year: '2022' },
-  { id: 5, title: 'Full Stack Web Developer', issuer: 'freeCodeCamp', year: '2022' },
+  {
+    id: 'devops',
+    name: 'DevOps & Tools',
+    icon: Terminal,
+    skills: ['Git', 'Docker', 'AWS', 'Vercel', 'CI/CD', 'Linux'],
+  },
 ]
 
 export default function Skills() {
-  const [selectedCategory, setSelectedCategory] = useState('ml')
+  const sectionRef = useRef<HTMLElement>(null)
+  const [selectedCategory, setSelectedCategory] = useState('frontend')
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.querySelectorAll('.reveal-up, .reveal-left, .reveal-right').forEach((el, i) => {
+              setTimeout(() => {
+                el.classList.add('revealed')
+              }, i * 100)
+            })
+          }
+        })
+      },
+      { threshold: 0.1 }
+    )
+
+    if (sectionRef.current) {
+      observer.observe(sectionRef.current)
+    }
+
+    return () => observer.disconnect()
+  }, [])
 
   return (
-    <section className="py-20 px-4">
-      <div className="max-w-7xl mx-auto">
-        {/* Section Header */}
-        <div className="mb-16 text-center scroll-fade-in">
-          <h2 className="text-4xl sm:text-5xl font-bold mb-4 gradient-text">
+    <section ref={sectionRef} className="py-24 px-4 parallax-section">
+      <div className="max-w-6xl mx-auto">
+        {/* Section Header - No description */}
+        <div className="mb-16 text-center">
+          <h2 className="reveal-up text-4xl sm:text-5xl font-display font-bold gradient-text">
             Skills & Expertise
           </h2>
-          <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-            ML & Data Science expertise combined with full-stack development capabilities.
-          </p>
         </div>
 
         {/* Skills Categories */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-16">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           {/* Category Navigation */}
-          <div className="space-y-4">
+          <div className="reveal-left space-y-3">
             {skillCategories.map((category) => {
               const Icon = category.icon
               return (
@@ -66,21 +90,21 @@ export default function Skills() {
                   onClick={() => setSelectedCategory(category.id)}
                   className={`w-full flex items-center gap-4 p-4 rounded-xl transition-all duration-300 text-left ${
                     selectedCategory === category.id
-                      ? 'bg-gradient-to-r from-primary/20 to-secondary/20 border border-primary/50 shadow-lg shadow-primary/20'
-                      : 'bg-card border border-border hover:border-primary/30 hover:bg-card/50'
+                      ? 'glass-effect border-primary/50 shadow-lg shadow-primary/10'
+                      : 'bg-card/50 border border-border hover:border-primary/30'
                   }`}
                 >
                   <div
                     className={`p-3 rounded-lg transition-all ${
                       selectedCategory === category.id
-                        ? 'bg-gradient-to-br from-primary to-secondary text-background'
+                        ? 'bg-primary text-primary-foreground'
                         : 'bg-primary/10 text-primary'
                     }`}
                   >
-                    <Icon className="w-6 h-6" />
+                    <Icon className="w-5 h-5" />
                   </div>
                   <div>
-                    <h3 className="font-bold text-foreground">{category.name}</h3>
+                    <h3 className="font-display font-bold text-foreground">{category.name}</h3>
                     <p className="text-xs text-muted-foreground">{category.skills.length} skills</p>
                   </div>
                 </button>
@@ -89,19 +113,19 @@ export default function Skills() {
           </div>
 
           {/* Selected Category Skills */}
-          <div className="space-y-4 animate-in fade-in">
+          <div className="reveal-right">
             {skillCategories
               .filter((cat) => cat.id === selectedCategory)
               .map((category) => (
-                <div key={category.id} className="space-y-4">
-                  <h3 className="text-2xl font-bold text-foreground mb-6">{category.name}</h3>
-                  <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                <div key={category.id} className="glass-effect p-6 rounded-2xl">
+                  <h3 className="text-2xl font-display font-bold text-foreground mb-6">{category.name}</h3>
+                  <div className="grid grid-cols-2 gap-3">
                     {category.skills.map((skill) => (
                       <div
                         key={skill}
-                        className="group px-4 py-3 rounded-lg bg-card border border-primary/20 hover:border-primary/60 hover:bg-primary/5 transition-all duration-300 text-center cursor-pointer"
+                        className="px-4 py-3 rounded-lg bg-card border border-border hover:border-primary/50 hover:bg-primary/5 transition-all duration-300 text-center"
                       >
-                        <p className="text-sm font-semibold text-foreground group-hover:text-primary transition-colors">
+                        <p className="text-sm font-medium text-foreground">
                           {skill}
                         </p>
                       </div>
@@ -109,70 +133,6 @@ export default function Skills() {
                   </div>
                 </div>
               ))}
-          </div>
-        </div>
-
-        {/* Certifications */}
-        <div className="border-t border-border pt-16">
-          <h3 className="text-3xl font-bold mb-12 text-center">
-            <span className="bg-gradient-to-r from-secondary to-primary bg-clip-text text-transparent">
-              Certifications & Achievements
-            </span>
-          </h3>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
-            {certifications.map((cert, index) => (
-              <div
-                key={cert.id}
-                className="group p-4 rounded-xl bg-card border border-secondary/20 hover:border-secondary/60 hover:bg-secondary/5 transition-all duration-300 text-center animate-in fade-in slide-in-from-bottom-4"
-                style={{ animationDelay: `${index * 50}ms` }}
-              >
-                <div className="inline-flex items-center justify-center w-12 h-12 rounded-lg bg-gradient-to-br from-secondary to-secondary/50 text-background mb-3 mx-auto group-hover:shadow-lg group-hover:shadow-secondary/30 transition-all">
-                  <Zap className="w-6 h-6" />
-                </div>
-                <h4 className="font-bold text-sm text-foreground mb-1 line-clamp-2">{cert.title}</h4>
-                <p className="text-xs text-muted-foreground mb-2">{cert.issuer}</p>
-                <p className="text-xs text-secondary font-semibold">{cert.year}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {/* Why Hire Me */}
-        <div className="mt-20 p-8 rounded-2xl bg-gradient-to-r from-primary/10 to-secondary/10 border border-primary/20">
-          <h3 className="text-2xl sm:text-3xl font-bold mb-6">
-            <span className="bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
-              Why Hire Me?
-            </span>
-          </h3>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div>
-              <h4 className="font-bold text-primary mb-2 flex items-center gap-2">
-                <Code2 className="w-5 h-5" />
-                Quality Code
-              </h4>
-              <p className="text-sm text-muted-foreground">
-                I write clean, maintainable, and well-tested code following industry best practices and design patterns.
-              </p>
-            </div>
-            <div>
-              <h4 className="font-bold text-secondary mb-2 flex items-center gap-2">
-                <Zap className="w-5 h-5" />
-                Fast Learner
-              </h4>
-              <p className="text-sm text-muted-foreground">
-                Passionate about exploring new technologies and methodologies to stay ahead in the ever-evolving tech landscape.
-              </p>
-            </div>
-            <div>
-              <h4 className="font-bold text-primary mb-2 flex items-center gap-2">
-                <Server className="w-5 h-5" />
-                Full Stack
-              </h4>
-              <p className="text-sm text-muted-foreground">
-                I can handle projects from database design to production deployment with expertise in both frontend and backend.
-              </p>
-            </div>
           </div>
         </div>
       </div>
