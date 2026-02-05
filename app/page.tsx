@@ -9,6 +9,7 @@ import Education from '@/components/Education'
 import Contact from '@/components/Contact'
 import SplashScreen from '@/components/SplashScreen'
 import LaserCursor from '@/components/LaserCursor'
+import BackgroundParticles from '@/components/BackgroundParticles'
 
 export default function Page() {
   const [showSplash, setShowSplash] = useState(true)
@@ -51,22 +52,7 @@ export default function Page() {
           <Contact />
         </div>
 
-        {/* Animated blacksmoke background */}
-        <div className="fixed inset-0 pointer-events-none overflow-hidden -z-10">
-          {[...Array(8)].map((_, i) => (
-            <div
-              key={i}
-              className="blacksmoke"
-              style={{
-                left: `${(i % 3) * 30 + 20}%`,
-                top: `${(i % 4) * 25}%`,
-                width: `${150 + i * 50}px`,
-                height: `${150 + i * 50}px`,
-                animationDelay: `${i * 0.5}s`,
-              }}
-            />
-          ))}
-        </div>
+        <BackgroundParticles />
       </main>
     </>
   )

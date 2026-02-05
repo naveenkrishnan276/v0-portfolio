@@ -41,19 +41,30 @@ export default function SplashScreen({ onComplete }: { onComplete: () => void })
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black overflow-hidden">
       {/* Animated blacksmoke background */}
       <div className="absolute inset-0 overflow-hidden">
-        {[...Array(5)].map((_, i) => (
-          <div
-            key={i}
-            className="blacksmoke"
-            style={{
-              left: `${Math.random() * 100}%`,
-              top: `${Math.random() * 100}%`,
-              width: `${100 + Math.random() * 100}px`,
-              height: `${100 + Math.random() * 100}px`,
-              animationDelay: `${i * 0.3}s`,
-            }}
-          />
-        ))}
+        {[...Array(5)].map((_, i) => {
+          const positions = [
+            { left: 20, top: 15 },
+            { left: 70, top: 25 },
+            { left: 40, top: 60 },
+            { left: 80, top: 70 },
+            { left: 30, top: 80 },
+          ]
+          const pos = positions[i]
+          const sizes = [150, 180, 200, 160, 190]
+          return (
+            <div
+              key={i}
+              className="blacksmoke"
+              style={{
+                left: `${pos.left}%`,
+                top: `${pos.top}%`,
+                width: `${sizes[i]}px`,
+                height: `${sizes[i]}px`,
+                animationDelay: `${i * 0.3}s`,
+              }}
+            />
+          )
+        })}
       </div>
 
       {/* Hello text animation */}
