@@ -26,16 +26,15 @@ export default function Hero() {
         className="absolute inset-0 pointer-events-none"
         style={{ y }}
       >
-        {/* Gradient orbs */}
-        <div className="absolute top-1/4 left-1/4 w-[500px] h-[500px] rounded-full blur-[150px] opacity-30 bg-[hsl(270,100%,65%)]" />
-        <div className="absolute bottom-1/3 right-1/4 w-[400px] h-[400px] rounded-full blur-[120px] opacity-20 bg-[hsl(200,100%,60%)]" />
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] rounded-full blur-[200px] opacity-15 bg-[hsl(330,100%,65%)]" />
+        {/* Subtle gradient orbs */}
+        <div className="absolute top-1/4 left-1/4 w-[500px] h-[500px] rounded-full blur-[150px] opacity-[0.03] bg-white" />
+        <div className="absolute bottom-1/3 right-1/4 w-[400px] h-[400px] rounded-full blur-[120px] opacity-[0.02] bg-white" />
         
         {/* Grid pattern */}
         <div 
-          className="absolute inset-0 opacity-[0.03]"
+          className="absolute inset-0 opacity-[0.02]"
           style={{
-            backgroundImage: `linear-gradient(hsl(270, 100%, 65%) 1px, transparent 1px), linear-gradient(90deg, hsl(270, 100%, 65%) 1px, transparent 1px)`,
+            backgroundImage: `linear-gradient(rgba(255,255,255,0.5) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.5) 1px, transparent 1px)`,
             backgroundSize: '100px 100px',
           }}
         />
@@ -64,9 +63,9 @@ export default function Hero() {
           transition={{ delay: 0.4, duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
           className="text-6xl sm:text-7xl md:text-8xl lg:text-9xl font-display font-normal uppercase tracking-wider leading-none"
         >
-          <span className="text-foreground">{"HI, I'M"}</span>
+          <span className="text-muted-foreground">{"HI, I'M"}</span>
           <br />
-          <span className="gradient-text">
+          <span className="text-foreground">
             {/* UPDATE: Change "YOUR NAME" to your actual name */}
             YOUR NAME
           </span>
@@ -92,7 +91,7 @@ export default function Hero() {
         >
           <a
             href="#projects"
-            className="inline-flex items-center gap-3 px-8 py-4 text-lg font-semibold rounded-full bg-gradient-to-r from-[hsl(270,100%,65%)] to-[hsl(330,100%,65%)] text-white hover:opacity-90 transition-opacity glow-purple"
+            className="inline-flex items-center gap-3 px-8 py-4 text-lg font-semibold rounded-full bg-foreground text-background hover:bg-foreground/90 transition-all"
           >
             View My Work
           </a>

@@ -63,7 +63,6 @@ function ReasonCard({
     offset: ['start end', 'center center'],
   })
 
-  // Staggered parallax effect
   const y = useTransform(scrollYProgress, [0, 1], [80 + index * 20, 0])
   const opacity = useTransform(scrollYProgress, [0, 0.5, 1], [0, 0.5, 1])
 
@@ -75,14 +74,14 @@ function ReasonCard({
       style={{ y, opacity }}
       className="group"
     >
-      <div className="glass-effect rounded-2xl p-6 h-full border border-transparent hover:border-primary/30 transition-all duration-500">
+      <div className="glass-effect rounded-2xl p-6 h-full border border-transparent hover:border-muted-foreground/20 transition-all duration-500">
         {/* Icon */}
-        <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-[hsl(270,100%,65%,0.2)] to-[hsl(330,100%,65%,0.2)] flex items-center justify-center mb-5 group-hover:from-[hsl(270,100%,65%)] group-hover:to-[hsl(330,100%,65%)] transition-all duration-500">
-          <Icon className="w-7 h-7 text-primary group-hover:text-white transition-colors duration-500" />
+        <div className="w-14 h-14 rounded-2xl bg-muted/20 flex items-center justify-center mb-5 group-hover:bg-foreground transition-all duration-300">
+          <Icon className="w-7 h-7 text-foreground group-hover:text-background transition-colors duration-300" />
         </div>
 
         {/* Content */}
-        <h3 className="text-xl font-semibold text-foreground mb-3 group-hover:gradient-text transition-all">
+        <h3 className="text-xl font-semibold text-foreground mb-3">
           {reason.title}
         </h3>
         <p className="text-muted-foreground leading-relaxed">
@@ -107,7 +106,6 @@ export default function WhyHireMe() {
     <ParallaxSection 
       className="py-32 px-4" 
       bgSpeed={0.2}
-      orbColors={['hsl(270, 100%, 65%)', 'hsl(330, 100%, 65%)', 'hsl(200, 100%, 60%)']}
     >
       <section ref={ref} className="max-w-6xl mx-auto">
         {/* Section Header */}
@@ -120,7 +118,7 @@ export default function WhyHireMe() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-            className="section-heading gradient-text"
+            className="section-heading text-foreground"
           >
             WHY HIRE ME
           </motion.h2>

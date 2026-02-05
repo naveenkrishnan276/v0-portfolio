@@ -69,7 +69,6 @@ function TimelineItem({
   const opacity = useTransform(scrollYProgress, [0, 0.5, 1], [0, 0.5, 1])
 
   const Icon = item.type === 'Education' ? GraduationCap : Briefcase
-  const isEducation = item.type === 'Education'
 
   return (
     <div className={`relative flex items-center ${isLeft ? 'md:justify-start' : 'md:justify-end'}`}>
@@ -82,21 +81,13 @@ function TimelineItem({
         style={{ x, opacity }}
         className={`w-full md:w-[45%] ${isLeft ? 'md:pr-8' : 'md:pl-8'}`}
       >
-        <div className={`glass-effect rounded-2xl p-6 border border-transparent hover:border-primary/30 transition-all duration-500 ${
-          isEducation ? 'hover:glow-purple' : 'hover:glow-blue'
-        }`}>
+        <div className="glass-effect rounded-2xl p-6 border border-transparent hover:border-muted-foreground/20 transition-all duration-500">
           {/* Header */}
           <div className="flex items-center gap-3 mb-4">
-            <div className={`p-2 rounded-lg ${
-              isEducation 
-                ? 'bg-[hsl(270,100%,65%,0.2)] text-[hsl(270,100%,65%)]' 
-                : 'bg-[hsl(200,100%,60%,0.2)] text-[hsl(200,100%,60%)]'
-            }`}>
+            <div className="p-2 rounded-lg bg-muted/30 text-foreground">
               <Icon className="w-5 h-5" />
             </div>
-            <span className={`text-xs font-semibold uppercase tracking-wider ${
-              isEducation ? 'text-[hsl(270,100%,65%)]' : 'text-[hsl(200,100%,60%)]'
-            }`}>
+            <span className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
               {item.type}
             </span>
           </div>
@@ -140,7 +131,6 @@ export default function Education() {
     <ParallaxSection 
       className="py-32 px-4" 
       bgSpeed={0.15}
-      orbColors={['hsl(270, 100%, 65%)', 'hsl(200, 100%, 60%)', 'hsl(330, 100%, 65%)']}
     >
       <section ref={ref} className="max-w-5xl mx-auto">
         {/* Section Header */}
@@ -153,7 +143,7 @@ export default function Education() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-            className="section-heading gradient-text"
+            className="section-heading text-foreground"
           >
             EXPERIENCE
           </motion.h2>

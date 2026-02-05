@@ -9,13 +9,6 @@ import ParallaxSection from './ParallaxSection'
  * ============================================
  * UPDATE YOUR CERTIFICATES DATA HERE
  * ============================================
- * 
- * Each certificate needs:
- * - id: unique number
- * - title: certificate name
- * - issuer: organization that issued it
- * - date: when you earned it
- * - link: URL to verify (optional, use '#' if none)
  */
 const certificates = [
   {
@@ -71,20 +64,15 @@ function CertificateCard({
       style={{ y, opacity }}
       className="group relative"
     >
-      <div className="glass-effect rounded-2xl p-6 h-full border border-transparent hover:border-primary/30 transition-all duration-500 card-glow">
-        {/* Glow effect on hover */}
-        <div className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none">
-          <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-[hsl(270,100%,65%,0.1)] to-[hsl(330,100%,65%,0.1)]" />
-        </div>
-
+      <div className="glass-effect rounded-2xl p-6 h-full border border-transparent hover:border-muted-foreground/20 transition-all duration-500">
         <div className="relative z-10">
           {/* Icon */}
-          <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-[hsl(270,100%,65%)] to-[hsl(330,100%,65%)] flex items-center justify-center mb-4 group-hover:glow-purple transition-shadow duration-500">
-            <Award className="w-6 h-6 text-white" />
+          <div className="w-12 h-12 rounded-xl bg-muted/30 flex items-center justify-center mb-4 group-hover:bg-foreground group-hover:text-background transition-all duration-300">
+            <Award className="w-6 h-6" />
           </div>
 
           {/* Title */}
-          <h3 className="text-xl font-semibold text-foreground mb-2 group-hover:gradient-text transition-all">
+          <h3 className="text-xl font-semibold text-foreground mb-2">
             {cert.title}
           </h3>
 
@@ -99,7 +87,7 @@ function CertificateCard({
                 href={cert.link}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-primary hover:text-primary/80 transition-colors"
+                className="text-muted-foreground hover:text-foreground transition-colors"
                 aria-label={`View ${cert.title} certificate`}
               >
                 <ExternalLink className="w-4 h-4" />
@@ -126,7 +114,6 @@ export default function Certificates() {
     <ParallaxSection 
       className="py-32 px-4" 
       bgSpeed={0.15}
-      orbColors={['hsl(330, 100%, 65%)', 'hsl(270, 100%, 65%)', 'hsl(200, 100%, 60%)']}
     >
       <section ref={ref} className="max-w-6xl mx-auto">
         {/* Section Header */}
@@ -139,7 +126,7 @@ export default function Certificates() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-            className="section-heading gradient-text"
+            className="section-heading text-foreground"
           >
             CERTIFICATES
           </motion.h2>

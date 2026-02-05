@@ -30,7 +30,6 @@ export default function Contact() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
-    // Handle form submission
     console.log('Form submitted:', formData)
   }
 
@@ -38,7 +37,6 @@ export default function Contact() {
     <ParallaxSection 
       className="py-32 px-4" 
       bgSpeed={0.15}
-      orbColors={['hsl(330, 100%, 65%)', 'hsl(270, 100%, 65%)', 'hsl(200, 100%, 60%)']}
     >
       <section ref={ref} className="max-w-4xl mx-auto">
         {/* Section Header */}
@@ -51,7 +49,7 @@ export default function Contact() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-            className="section-heading gradient-text"
+            className="section-heading text-foreground"
           >
             CONTACT
           </motion.h2>
@@ -76,7 +74,7 @@ export default function Contact() {
                   id="name"
                   value={formData.name}
                   onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                  className="w-full px-4 py-3 rounded-xl bg-input border border-border text-foreground placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all"
+                  className="w-full px-4 py-3 rounded-xl bg-input border border-border text-foreground placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-muted-foreground/30 focus:border-muted-foreground/50 transition-all"
                   placeholder="Your name"
                 />
               </div>
@@ -89,7 +87,7 @@ export default function Contact() {
                   id="email"
                   value={formData.email}
                   onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                  className="w-full px-4 py-3 rounded-xl bg-input border border-border text-foreground placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all"
+                  className="w-full px-4 py-3 rounded-xl bg-input border border-border text-foreground placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-muted-foreground/30 focus:border-muted-foreground/50 transition-all"
                   placeholder="your@email.com"
                 />
               </div>
@@ -103,13 +101,13 @@ export default function Contact() {
                 rows={5}
                 value={formData.message}
                 onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                className="w-full px-4 py-3 rounded-xl bg-input border border-border text-foreground placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all resize-none"
+                className="w-full px-4 py-3 rounded-xl bg-input border border-border text-foreground placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-muted-foreground/30 focus:border-muted-foreground/50 transition-all resize-none"
                 placeholder="Your message..."
               />
             </div>
             <button
               type="submit"
-              className="w-full md:w-auto inline-flex items-center justify-center gap-2 px-8 py-4 rounded-full bg-gradient-to-r from-[hsl(270,100%,65%)] to-[hsl(330,100%,65%)] text-white font-semibold hover:opacity-90 transition-opacity glow-purple"
+              className="w-full md:w-auto inline-flex items-center justify-center gap-2 px-8 py-4 rounded-full bg-foreground text-background font-semibold hover:bg-foreground/90 transition-all"
             >
               Send Message
               <Send className="w-5 h-5" />
@@ -133,7 +131,7 @@ export default function Contact() {
                 href={social.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="p-4 rounded-2xl glass-effect border border-transparent hover:border-primary/30 text-muted-foreground hover:text-primary transition-all duration-300 hover:-translate-y-1"
+                className="p-4 rounded-2xl glass-effect border border-transparent hover:border-muted-foreground/20 text-muted-foreground hover:text-foreground transition-all duration-300 hover:-translate-y-1"
                 aria-label={social.name}
               >
                 <Icon className="w-6 h-6" />

@@ -42,16 +42,13 @@ export default function SplashScreen({ onComplete }: { onComplete: () => void })
           transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
           className="fixed inset-0 z-[100] flex items-center justify-center bg-background"
         >
-          {/* Gradient background glow */}
+          {/* Subtle background glow */}
           <div className="absolute inset-0 overflow-hidden">
             <motion.div
               initial={{ scale: 0.8, opacity: 0 }}
-              animate={{ scale: 1, opacity: 0.3 }}
+              animate={{ scale: 1, opacity: 0.05 }}
               transition={{ duration: 1.5, ease: 'easeOut' }}
-              className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] rounded-full blur-[200px]"
-              style={{
-                background: 'radial-gradient(circle, hsl(270, 100%, 65%), hsl(330, 100%, 65%), transparent)',
-              }}
+              className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] rounded-full blur-[200px] bg-white"
             />
           </div>
 
@@ -65,7 +62,7 @@ export default function SplashScreen({ onComplete }: { onComplete: () => void })
                   animate={{ opacity: 1, y: 0, scale: 1 }}
                   exit={{ opacity: 0, y: -30, scale: 0.9 }}
                   transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
-                  className="text-7xl sm:text-8xl md:text-9xl font-display font-normal uppercase tracking-wider gradient-text"
+                  className="text-7xl sm:text-8xl md:text-9xl font-display font-normal uppercase tracking-wider text-foreground"
                 >
                   {greetings[currentIndex]}
                 </motion.h1>
@@ -82,10 +79,10 @@ export default function SplashScreen({ onComplete }: { onComplete: () => void })
                     width: idx === currentIndex ? 32 : 8,
                     backgroundColor:
                       idx < currentIndex
-                        ? 'hsl(270, 100%, 65%)'
+                        ? 'hsl(0, 0%, 98%)'
                         : idx === currentIndex
-                          ? 'hsl(330, 100%, 65%)'
-                          : 'hsl(240, 5%, 25%)',
+                          ? 'hsl(0, 0%, 70%)'
+                          : 'hsl(0, 0%, 20%)',
                   }}
                   transition={{ duration: 0.3 }}
                   className="h-2 rounded-full"

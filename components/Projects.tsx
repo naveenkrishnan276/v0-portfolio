@@ -9,14 +9,6 @@ import ParallaxSection from './ParallaxSection'
  * ============================================
  * UPDATE YOUR PROJECTS DATA HERE
  * ============================================
- * 
- * Each project needs:
- * - id: unique number
- * - title: project name
- * - description: brief description (1-2 sentences)
- * - tech: array of technologies used
- * - link: live project URL (or '#' if none)
- * - github: GitHub repo URL (or '#' if none)
  */
 const projects = [
   {
@@ -69,19 +61,19 @@ function ProjectCard({
       style={{ y, opacity, scale }}
       className="group"
     >
-      <div className="glass-effect rounded-3xl overflow-hidden border border-transparent hover:border-primary/30 transition-all duration-500">
-        {/* Gradient top bar */}
-        <div className="h-1 bg-gradient-to-r from-[hsl(270,100%,65%)] via-[hsl(200,100%,60%)] to-[hsl(330,100%,65%)]" />
+      <div className="glass-effect rounded-3xl overflow-hidden border border-transparent hover:border-muted-foreground/20 transition-all duration-500">
+        {/* Top bar */}
+        <div className="h-px bg-gradient-to-r from-transparent via-muted-foreground/30 to-transparent" />
 
         {/* Content */}
-        <div className="p-8 md:p-10">
+        <div className="p-8 md:p-10 relative">
           {/* Project number */}
-          <span className="text-6xl font-display font-normal text-muted/20 absolute top-4 right-6">
+          <span className="text-6xl font-display font-normal text-muted/10 absolute top-4 right-6">
             0{project.id}
           </span>
 
           {/* Title */}
-          <h3 className="text-3xl md:text-4xl font-display font-normal uppercase tracking-wider text-foreground mb-4 group-hover:gradient-text transition-all">
+          <h3 className="text-3xl md:text-4xl font-display font-normal uppercase tracking-wider text-foreground mb-4">
             {project.title}
           </h3>
 
@@ -95,7 +87,7 @@ function ProjectCard({
             {project.tech.map((tech) => (
               <span
                 key={tech}
-                className="px-4 py-2 text-sm rounded-full bg-gradient-to-r from-[hsl(270,100%,65%,0.1)] to-[hsl(330,100%,65%,0.1)] text-foreground border border-primary/20 hover:border-primary/50 transition-colors"
+                className="px-4 py-2 text-sm rounded-full bg-muted/20 text-foreground border border-border hover:border-muted-foreground/30 transition-colors"
               >
                 {tech}
               </span>
@@ -106,14 +98,14 @@ function ProjectCard({
           <div className="flex gap-4">
             <a
               href={project.link}
-              className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-gradient-to-r from-[hsl(270,100%,65%)] to-[hsl(330,100%,65%)] text-white font-semibold hover:opacity-90 transition-opacity"
+              className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-foreground text-background font-semibold hover:bg-foreground/90 transition-all"
             >
               Live Project
               <ExternalLink className="w-4 h-4" />
             </a>
             <a
               href={project.github}
-              className="inline-flex items-center gap-2 px-6 py-3 rounded-full border border-border text-foreground font-semibold hover:border-primary/50 hover:text-primary transition-all"
+              className="inline-flex items-center gap-2 px-6 py-3 rounded-full border border-border text-foreground font-semibold hover:border-muted-foreground/50 transition-all"
             >
               Source
               <Github className="w-4 h-4" />
@@ -139,7 +131,6 @@ export default function Projects() {
     <ParallaxSection 
       className="py-32 px-4" 
       bgSpeed={0.25}
-      orbColors={['hsl(270, 100%, 65%)', 'hsl(200, 100%, 60%)', 'hsl(330, 100%, 65%)']}
     >
       <section ref={ref} className="max-w-5xl mx-auto">
         {/* Section Header */}
@@ -152,7 +143,7 @@ export default function Projects() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-            className="section-heading gradient-text"
+            className="section-heading text-foreground"
           >
             PROJECTS
           </motion.h2>

@@ -26,11 +26,10 @@ export default function LaserCursor() {
         trail.style.top = `${e.clientY}px`
         trail.style.width = '4px'
         trail.style.height = '4px'
-        trail.style.background = 'radial-gradient(circle, hsl(270, 100%, 65%), hsl(330, 100%, 65%))'
+        trail.style.background = 'rgba(255, 255, 255, 0.6)'
         trail.style.borderRadius = '50%'
         trail.style.pointerEvents = 'none'
         trail.style.zIndex = '9998'
-        trail.style.boxShadow = '0 0 8px hsl(270, 100%, 65%)'
         trail.style.animation = 'trail-fade 0.6s ease-out forwards'
 
         trailRef.current.appendChild(trail)

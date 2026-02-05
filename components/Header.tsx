@@ -49,7 +49,7 @@ export default function Header({ onNavigate, activeSection }: HeaderProps) {
           onClick={() => handleNavClick('hero')} 
           className="group relative"
         >
-          <span className="text-2xl font-display font-normal uppercase tracking-wider gradient-text">
+          <span className="text-2xl font-display font-normal uppercase tracking-wider text-foreground">
             {/* UPDATE: Change to your initials or name */}
             YN
           </span>
@@ -63,13 +63,13 @@ export default function Header({ onNavigate, activeSection }: HeaderProps) {
               onClick={() => handleNavClick(item.id)}
               className={`text-sm font-medium tracking-wider transition-all duration-300 relative group ${
                 activeSection === item.id
-                  ? 'text-primary'
+                  ? 'text-foreground'
                   : 'text-muted-foreground hover:text-foreground'
               }`}
             >
               {item.label}
               <span
-                className={`absolute -bottom-1 left-0 h-0.5 bg-gradient-to-r from-[hsl(270,100%,65%)] to-[hsl(330,100%,65%)] transition-all duration-300 ${
+                className={`absolute -bottom-1 left-0 h-px bg-foreground transition-all duration-300 ${
                   activeSection === item.id ? 'w-full' : 'w-0 group-hover:w-full'
                 }`}
               />
@@ -81,7 +81,7 @@ export default function Header({ onNavigate, activeSection }: HeaderProps) {
         <div className="hidden md:flex">
           <button
             onClick={() => handleNavClick('contact')}
-            className="px-6 py-2.5 rounded-full bg-gradient-to-r from-[hsl(270,100%,65%)] to-[hsl(330,100%,65%)] text-white font-semibold text-sm hover:opacity-90 transition-opacity"
+            className="px-6 py-2.5 rounded-full bg-foreground text-background font-semibold text-sm hover:bg-foreground/90 transition-all"
           >
             Hire Me
           </button>
@@ -113,8 +113,8 @@ export default function Header({ onNavigate, activeSection }: HeaderProps) {
                   onClick={() => handleNavClick(item.id)}
                   className={`text-left py-3 px-4 rounded-xl transition-all font-medium tracking-wider ${
                     activeSection === item.id
-                      ? 'bg-primary/10 text-primary'
-                      : 'text-muted-foreground hover:text-foreground hover:bg-muted/20'
+                      ? 'bg-muted/20 text-foreground'
+                      : 'text-muted-foreground hover:text-foreground hover:bg-muted/10'
                   }`}
                 >
                   {item.label}
@@ -122,7 +122,7 @@ export default function Header({ onNavigate, activeSection }: HeaderProps) {
               ))}
               <button
                 onClick={() => handleNavClick('contact')}
-                className="w-full mt-2 px-6 py-3 rounded-full bg-gradient-to-r from-[hsl(270,100%,65%)] to-[hsl(330,100%,65%)] text-white font-semibold"
+                className="w-full mt-2 px-6 py-3 rounded-full bg-foreground text-background font-semibold"
               >
                 Hire Me
               </button>
