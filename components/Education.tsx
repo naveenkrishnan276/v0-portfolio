@@ -1,167 +1,172 @@
-import { Calendar, MapPin, Star } from 'lucide-react'
+'use client'
 
+import { useRef } from 'react'
+import { motion, useScroll, useTransform } from 'framer-motion'
+import { Calendar, MapPin, GraduationCap, Briefcase } from 'lucide-react'
+import ParallaxSection from './ParallaxSection'
+
+/*
+ * ============================================
+ * UPDATE YOUR EDUCATION & EXPERIENCE DATA HERE
+ * ============================================
+ */
 const education = [
   {
     id: 1,
     type: 'Education',
-    title: 'Bachelor of Computer Science & AI',
-    institution: 'Tech University',
-    location: 'San Francisco, CA',
+    title: 'Bachelor of Computer Science',
+    institution: 'University Name',
+    location: 'City, State',
     startDate: '2019',
     endDate: '2023',
-    description: 'GPA: 3.8/4.0. Specialized in Machine Learning, Data Science, and Full Stack Development.',
-    highlights: ['Dean\'s List', 'AI Research Published', 'Teaching Assistant'],
   },
   {
     id: 2,
-    type: 'Work Experience',
-    title: 'ML Engineer',
-    institution: 'AI Tech Company',
+    type: 'Work',
+    title: 'Software Engineer',
+    institution: 'Company Name',
     location: 'Remote',
     startDate: '2023',
     endDate: 'Present',
-    description: 'Building production ML systems processing millions of data points. Developing NLP and computer vision models.',
-    highlights: ['94% model accuracy', '10x inference speed', 'Team lead'],
   },
   {
     id: 3,
-    type: 'Work Experience',
-    title: 'Data Scientist',
-    institution: 'Analytics Startup',
-    location: 'New York, NY',
+    type: 'Work',
+    title: 'Junior Developer',
+    institution: 'Previous Company',
+    location: 'City, State',
     startDate: '2022',
     endDate: '2023',
-    description: 'Developed predictive models and data pipelines for enterprise clients. Implemented ML workflows.',
-    highlights: ['5 ML models', 'Python expertise', 'Full stack ML'],
   },
   {
     id: 4,
     type: 'Education',
-    title: 'Deep Learning Specialization',
-    institution: 'Coursera / Deep Learning',
+    title: 'Professional Certificate',
+    institution: 'Online Platform',
     location: 'Online',
     startDate: '2023',
     endDate: '2024',
-    description: 'Advanced deep learning with focus on neural networks, CNNs, RNNs, and transformers.',
-    highlights: ['TensorFlow certified', 'Project portfolio', 'State-of-art practices'],
   },
 ]
 
-export default function Education() {
+function TimelineItem({ 
+  item, 
+  index,
+  isLeft
+}: { 
+  item: typeof education[0]
+  index: number
+  isLeft: boolean
+}) {
+  const ref = useRef<HTMLDivElement>(null)
+  
+  const { scrollYProgress } = useScroll({
+    target: ref,
+    offset: ['start end', 'center center'],
+  })
+
+  const x = useTransform(scrollYProgress, [0, 1], [isLeft ? -80 : 80, 0])
+  const opacity = useTransform(scrollYProgress, [0, 0.5, 1], [0, 0.5, 1])
+
+  const Icon = item.type === 'Education' ? GraduationCap : Briefcase
+
   return (
-    <section className="py-20 px-4">
-      <div className="max-w-4xl mx-auto">
-        {/* Section Header */}
-        <div className="mb-16 text-center scroll-fade-in">
-          <h2 className="text-4xl sm:text-5xl font-bold mb-4 gradient-text">
-            Education & Experience
-          </h2>
-          <p className="text-muted-foreground text-lg">
-            A journey of continuous learning and professional growth in AI and ML.
-          </p>
-        </div>
+    <div className={`relative flex items-center ${isLeft ? 'md:justify-start' : 'md:justify-end'}`}>
+      {/* Timeline node */}
+      <div className="timeline-node hidden md:block" style={{ top: '50%', transform: 'translate(-50%, -50%)' }} />
 
-        {/* Timeline */}
-        <div className="space-y-0">
-          {education.map((item, index) => (
-            <div key={item.id} className="relative group">
-              {/* Timeline line */}
-              {index !== education.length - 1 && (
-                <div className="absolute left-8 top-32 bottom-0 w-0.5 bg-gradient-to-b from-primary/50 to-transparent" />
-              )}
-
-              {/* Timeline item */}
-              <div className="flex gap-6 pb-12 animate-in fade-in slide-in-from-left-4" style={{ animationDelay: `${index * 100}ms` }}>
-                {/* Timeline dot */}
-                <div className="relative flex flex-col items-center mt-2">
-                  <div className="w-4 h-4 rounded-full border-2 border-primary bg-background group-hover:scale-150 transition-transform duration-300" />
-                  <div className="absolute inset-0 rounded-full border-2 border-primary/30 animate-pulse group-hover:animate-none" style={{ width: '16px', height: '16px' }} />
-                </div>
-
-                {/* Content */}
-                <div className="flex-1 group/card">
-                  <div className={`p-6 rounded-2xl transition-all duration-300 border ${
-                    item.type === 'Education'
-                      ? 'bg-primary/5 border-primary/20 hover:border-primary/60 hover:shadow-lg hover:shadow-primary/20'
-                      : 'bg-secondary/5 border-secondary/20 hover:border-secondary/60 hover:shadow-lg hover:shadow-secondary/20'
-                  }`}>
-                    {/* Badge */}
-                    <div className="flex items-center gap-2 mb-3">
-                      <span className={`px-3 py-1 text-xs font-semibold rounded-full ${
-                        item.type === 'Education'
-                          ? 'bg-primary/20 text-primary'
-                          : 'bg-secondary/20 text-secondary'
-                      }`}>
-                        {item.type}
-                      </span>
-                      <span className="text-xs text-muted-foreground flex items-center gap-1">
-                        <Calendar className="w-3 h-3" />
-                        {item.startDate} - {item.endDate}
-                      </span>
-                    </div>
-
-                    {/* Title */}
-                    <h3 className="text-xl font-bold text-foreground mb-1 group-hover/card:text-primary transition-colors">
-                      {item.title}
-                    </h3>
-
-                    {/* Institution */}
-                    <div className="flex items-center gap-2 mb-3 text-muted-foreground">
-                      <span className="font-semibold">{item.institution}</span>
-                      <span className="text-xs flex items-center gap-1">
-                        <MapPin className="w-3 h-3" />
-                        {item.location}
-                      </span>
-                    </div>
-
-                    {/* Description */}
-                    <p className="text-sm text-muted-foreground mb-4">
-                      {item.description}
-                    </p>
-
-                    {/* Highlights */}
-                    <div className="flex flex-wrap gap-2">
-                      {item.highlights.map((highlight) => (
-                        <div
-                          key={highlight}
-                          className="flex items-center gap-1 px-3 py-1 rounded-full text-xs font-medium bg-background border border-border hover:border-primary/50 transition-all"
-                        >
-                          <Star className="w-3 h-3 text-primary" />
-                          {highlight}
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-              </div>
+      {/* Card */}
+      <motion.div
+        ref={ref}
+        style={{ x, opacity }}
+        className={`w-full md:w-[45%] ${isLeft ? 'md:pr-8' : 'md:pl-8'}`}
+      >
+        <div className="glass-effect rounded-2xl p-6 border border-transparent hover:border-muted-foreground/20 transition-all duration-500">
+          {/* Header */}
+          <div className="flex items-center gap-3 mb-4">
+            <div className="p-2 rounded-lg bg-muted/30 text-foreground">
+              <Icon className="w-5 h-5" />
             </div>
-          ))}
-        </div>
+            <span className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+              {item.type}
+            </span>
+          </div>
 
-        {/* Additional Info */}
-        <div className="mt-16 p-8 rounded-2xl bg-card border border-border">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div className="text-center">
-              <div className="text-4xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent mb-2">
-                5+
-              </div>
-              <p className="text-muted-foreground">Years of Experience</p>
-            </div>
-            <div className="text-center border-l border-r border-border">
-              <div className="text-4xl font-bold bg-gradient-to-r from-secondary to-primary bg-clip-text text-transparent mb-2">
-                20+
-              </div>
-              <p className="text-muted-foreground">Projects Completed</p>
-            </div>
-            <div className="text-center">
-              <div className="text-4xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent mb-2">
-                50+
-              </div>
-              <p className="text-muted-foreground">Clients Satisfied</p>
-            </div>
+          {/* Title */}
+          <h3 className="text-xl font-semibold text-foreground mb-2">
+            {item.title}
+          </h3>
+
+          {/* Institution */}
+          <p className="text-muted-foreground mb-4">{item.institution}</p>
+
+          {/* Meta */}
+          <div className="flex flex-wrap items-center gap-4 text-sm text-muted-foreground">
+            <span className="flex items-center gap-1">
+              <Calendar className="w-4 h-4" />
+              {item.startDate} - {item.endDate}
+            </span>
+            <span className="flex items-center gap-1">
+              <MapPin className="w-4 h-4" />
+              {item.location}
+            </span>
           </div>
         </div>
-      </div>
-    </section>
+      </motion.div>
+    </div>
+  )
+}
+
+export default function Education() {
+  const ref = useRef<HTMLElement>(null)
+  
+  const { scrollYProgress } = useScroll({
+    target: ref,
+    offset: ['start end', 'end start'],
+  })
+
+  const y = useTransform(scrollYProgress, [0, 1], ['0%', '20%'])
+
+  return (
+    <ParallaxSection 
+      className="py-32 px-4" 
+      bgSpeed={0.15}
+    >
+      <section ref={ref} className="max-w-5xl mx-auto">
+        {/* Section Header */}
+        <motion.div 
+          className="text-center mb-20"
+          style={{ y }}
+        >
+          <motion.h2
+            initial={{ opacity: 0, y: 40 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+            className="section-heading text-foreground"
+          >
+            EXPERIENCE
+          </motion.h2>
+        </motion.div>
+
+        {/* Timeline */}
+        <div className="relative">
+          {/* Central line */}
+          <div className="timeline-pipe hidden md:block" />
+
+          {/* Items */}
+          <div className="space-y-8 md:space-y-12">
+            {education.map((item, index) => (
+              <TimelineItem 
+                key={item.id} 
+                item={item} 
+                index={index}
+                isLeft={index % 2 === 0}
+              />
+            ))}
+          </div>
+        </div>
+      </section>
+    </ParallaxSection>
   )
 }

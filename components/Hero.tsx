@@ -1,75 +1,119 @@
-import { ArrowRight, Brain, Zap } from 'lucide-react'
+'use client'
+
+import { useRef } from 'react'
+import { motion, useScroll, useTransform } from 'framer-motion'
+import { ArrowDown } from 'lucide-react'
 
 export default function Hero() {
+  const ref = useRef<HTMLElement>(null)
+  
+  const { scrollYProgress } = useScroll({
+    target: ref,
+    offset: ['start start', 'end start'],
+  })
+
+  const y = useTransform(scrollYProgress, [0, 1], ['0%', '50%'])
+  const opacity = useTransform(scrollYProgress, [0, 0.5], [1, 0])
+  const scale = useTransform(scrollYProgress, [0, 0.5], [1, 0.8])
+
   return (
-    <section className="min-h-screen flex items-center justify-center pt-20 px-4 relative overflow-hidden">
-      <div className="max-w-4xl mx-auto z-10">
-        <div className="text-center mb-12 scroll-fade-in">
-          {/* Name and Title */}
-          <div className="mb-8">
-            <h1 className="text-5xl sm:text-7xl font-bold mb-4 text-balance gradient-text">
-              Your Name
-            </h1>
-            <p className="text-xl sm:text-2xl text-muted-foreground mb-2">
-              ML Engineer &amp; Full Stack Developer
-            </p>
-          </div>
+    <section 
+      ref={ref}
+      className="relative min-h-screen flex items-center justify-center overflow-hidden"
+    >
+      {/* Parallax background elements */}
+      <motion.div 
+        className="absolute inset-0 pointer-events-none"
+        style={{ y }}
+      >
+        {/* Subtle gradient orbs */}
+        <div className="absolute top-1/4 left-1/4 w-[500px] h-[500px] rounded-full blur-[150px] opacity-[0.03] bg-white" />
+        <div className="absolute bottom-1/3 right-1/4 w-[400px] h-[400px] rounded-full blur-[120px] opacity-[0.02] bg-white" />
+        
+        {/* Grid pattern */}
+        <div 
+          className="absolute inset-0 opacity-[0.02]"
+          style={{
+            backgroundImage: `linear-gradient(rgba(255,255,255,0.5) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.5) 1px, transparent 1px)`,
+            backgroundSize: '100px 100px',
+          }}
+        />
+      </motion.div>
 
-          {/* Stats with glass effect */}
-          <div className="flex flex-col sm:flex-row gap-6 justify-center mb-12">
-            <div className="glass-effect group px-6 py-4 rounded-xl hover:border-primary/50 transition-all duration-300">
-              <div className="flex items-center gap-3 justify-center">
-                <Brain className="w-5 h-5 text-primary" />
-                <div className="text-left">
-                  <p className="text-xs text-muted-foreground">ML Models</p>
-                  <p className="text-2xl font-bold">8+</p>
-                </div>
-              </div>
-            </div>
+      {/* Main content */}
+      <motion.div 
+        className="relative z-10 text-center px-4 max-w-5xl mx-auto"
+        style={{ opacity, scale }}
+      >
+        {/* Pre-heading */}
+        <motion.p
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.2, duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+          className="text-sm sm:text-base uppercase tracking-[0.3em] text-muted-foreground mb-6"
+        >
+          {/* UPDATE: Change your subtitle */}
+          Creative Developer
+        </motion.p>
 
-            <div className="glass-effect group px-6 py-4 rounded-xl hover:border-secondary/50 transition-all duration-300">
-              <div className="flex items-center gap-3 justify-center">
-                <Zap className="w-5 h-5 text-secondary" />
-                <div className="text-left">
-                  <p className="text-xs text-muted-foreground">Projects</p>
-                  <p className="text-2xl font-bold">15+</p>
-                </div>
-              </div>
-            </div>
-          </div>
+        {/* Main heading */}
+        <motion.h1
+          initial={{ opacity: 0, y: 40 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.4, duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+          className="text-6xl sm:text-7xl md:text-8xl lg:text-9xl font-display font-normal uppercase tracking-wider leading-none"
+        >
+          <span className="text-muted-foreground">{"HI, I'M"}</span>
+          <br />
+          <span className="text-foreground">
+            {/* UPDATE: Change "YOUR NAME" to your actual name */}
+            YOUR NAME
+          </span>
+        </motion.h1>
 
-          {/* Description */}
-          <p className="text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed mb-12 text-balance">
-            Building intelligent systems and scalable applications using machine learning and modern web technologies. 
-            Passionate about transforming data into insights and creating intuitive user experiences through full-stack development.
-          </p>
+        {/* Short description */}
+        <motion.p
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.6, duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+          className="mt-8 text-lg sm:text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed"
+        >
+          {/* UPDATE: Change your description */}
+          Building exceptional digital experiences with modern technologies and creative solutions.
+        </motion.p>
 
-          {/* CTA Buttons */}
-          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-            <a
-              href="#projects"
-              className="group px-8 py-4 rounded-lg bg-gradient-to-r from-primary to-secondary text-background font-semibold flex items-center gap-2 hover:shadow-lg hover:shadow-primary/50 transition-all duration-300 hover:-translate-y-1"
-            >
-              View My Work
-              <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-            </a>
+        {/* CTA Button */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.8, duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+          className="mt-12"
+        >
+          <a
+            href="#projects"
+            className="inline-flex items-center gap-3 px-8 py-4 text-lg font-semibold rounded-full bg-foreground text-background hover:bg-foreground/90 transition-all"
+          >
+            View My Work
+          </a>
+        </motion.div>
+      </motion.div>
 
-            <a
-              href="#contact"
-              className="glass-effect px-8 py-4 rounded-lg text-primary font-semibold transition-all duration-300 hover:-translate-y-1"
-            >
-              Let&apos;s Connect
-            </a>
-          </div>
-        </div>
-
-        {/* Scroll indicator */}
-        <div className="flex justify-center mt-16 animate-bounce">
-          <div className="w-6 h-10 rounded-full border-2 border-primary/50 flex items-center justify-center">
-            <div className="w-1 h-2 rounded-full bg-primary animate-pulse" />
-          </div>
-        </div>
-      </div>
+      {/* Scroll indicator */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 1.2, duration: 0.8 }}
+        className="absolute bottom-8 left-1/2 -translate-x-1/2"
+      >
+        <motion.div
+          animate={{ y: [0, 10, 0] }}
+          transition={{ duration: 1.5, repeat: Infinity, ease: 'easeInOut' }}
+          className="flex flex-col items-center gap-2 text-muted-foreground"
+        >
+          <span className="text-xs uppercase tracking-widest">Scroll</span>
+          <ArrowDown className="w-5 h-5" />
+        </motion.div>
+      </motion.div>
     </section>
   )
 }

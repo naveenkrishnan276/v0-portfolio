@@ -1,125 +1,105 @@
 'use client'
 
 import { useEffect, useState } from 'react'
+import { motion, AnimatePresence } from 'framer-motion'
 
-const languages = [
-  { text: 'Hola', lang: 'Spanish' },
-  { text: 'Bonjour', lang: 'French' },
-  { text: '你好', lang: 'Mandarin' },
-  { text: 'مرحبا', lang: 'Arabic' },
-  { text: 'こんにちは', lang: 'Japanese' },
-  { text: 'नमस्ते', lang: 'Hindi' },
-  { text: 'வணக்கம்', lang: 'Tamil' },
-  { text: 'Hello', lang: 'English' },
+const greetings = [
+  'Hello',
+  'Hola',
+  'Bonjour',
+  'Namaste',
+  'Ciao',
+  'Konnichiwa',
 ]
 
 export default function SplashScreen({ onComplete }: { onComplete: () => void }) {
   const [currentIndex, setCurrentIndex] = useState(0)
-  const [isVisible, setIsVisible] = useState(true)
+  const [isExiting, setIsExiting] = useState(false)
 
   useEffect(() => {
-    if (currentIndex >= languages.length) {
-      setTimeout(() => {
-        setIsVisible(false)
-        setTimeout(onComplete, 500)
-      }, 500)
-      return
+    if (currentIndex >= greetings.length) {
+      setIsExiting(true)
+      const exitTimer = setTimeout(() => {
+        onComplete()
+      }, 800)
+      return () => clearTimeout(exitTimer)
     }
 
     const timer = setTimeout(() => {
-      setCurrentIndex(currentIndex + 1)
-    }, 450)
+      setCurrentIndex((prev) => prev + 1)
+    }, 400)
 
     return () => clearTimeout(timer)
   }, [currentIndex, onComplete])
 
-  if (!isVisible || currentIndex >= languages.length) {
-    return null
-  }
-
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black overflow-hidden">
-      {/* Animated blacksmoke background */}
-      <div className="absolute inset-0 overflow-hidden">
-        {[...Array(5)].map((_, i) => {
-          const positions = [
-            { left: 20, top: 15 },
-            { left: 70, top: 25 },
-            { left: 40, top: 60 },
-            { left: 80, top: 70 },
-            { left: 30, top: 80 },
-          ]
-          const pos = positions[i]
-          const sizes = [150, 180, 200, 160, 190]
-          return (
-            <div
-              key={i}
-              className="blacksmoke"
-              style={{
-                left: `${pos.left}%`,
-                top: `${pos.top}%`,
-                width: `${sizes[i]}px`,
-                height: `${sizes[i]}px`,
-                animationDelay: `${i * 0.3}s`,
-              }}
+    <AnimatePresence>
+      {!isExiting ? (
+        <motion.div
+          key="splash"
+          initial={{ opacity: 1 }}
+          exit={{ opacity: 0, y: -50 }}
+          transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+          className="fixed inset-0 z-[100] flex items-center justify-center bg-background"
+        >
+          {/* Subtle background glow */}
+          <div className="absolute inset-0 overflow-hidden">
+            <motion.div
+              initial={{ scale: 0.8, opacity: 0 }}
+              animate={{ scale: 1, opacity: 0.05 }}
+              transition={{ duration: 1.5, ease: 'easeOut' }}
+              className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] rounded-full blur-[200px] bg-white"
             />
-          )
-        })}
-      </div>
+          </div>
 
-      {/* Hello text animation */}
-      <div className="relative z-10 text-center">
-        <div className="mb-8">
-          <h1
-            key={currentIndex}
-            className="text-7xl md:text-8xl font-bold animate-fade-in-scale"
-            style={{
-              background: 'linear-gradient(135deg, hsl(180, 100%, 50%), hsl(300, 100%, 50%))',
-              backgroundSize: '200% 200%',
-              WebkitBackgroundClip: 'text',
-              WebkitTextFillColor: 'transparent',
-              backgroundClip: 'text',
-              animation: 'gradient-shift 2s ease infinite, fade-in-scale 0.5s ease-out',
-            }}
-          >
-            {languages[currentIndex].text}
-          </h1>
-        </div>
+          {/* Greeting text */}
+          <div className="relative z-10 text-center">
+            <AnimatePresence mode="wait">
+              {currentIndex < greetings.length && (
+                <motion.h1
+                  key={currentIndex}
+                  initial={{ opacity: 0, y: 30, scale: 0.9 }}
+                  animate={{ opacity: 1, y: 0, scale: 1 }}
+                  exit={{ opacity: 0, y: -30, scale: 0.9 }}
+                  transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
+                  className="text-7xl sm:text-8xl md:text-9xl font-display font-normal uppercase tracking-wider text-foreground"
+                >
+                  {greetings[currentIndex]}
+                </motion.h1>
+              )}
+            </AnimatePresence>
 
-        {/* Language label */}
-        <p className="text-lg text-gray-400 tracking-widest uppercase">
-          {languages[currentIndex].lang}
-        </p>
-
-        {/* Progress indicator */}
-        <div className="mt-8 flex gap-2 justify-center">
-          {languages.map((_, idx) => (
-            <div
-              key={idx}
-              className={`h-1 rounded-full transition-all duration-300 ${
-                idx < currentIndex
-                  ? 'w-8 bg-gradient-to-r from-cyan-500 to-magenta-500'
-                  : idx === currentIndex
-                    ? 'w-8 bg-cyan-500'
-                    : 'w-2 bg-gray-600'
-              }`}
-            />
-          ))}
-        </div>
-      </div>
-
-      <style>{`
-        @keyframes fade-in-scale {
-          from {
-            opacity: 0;
-            transform: scale(0.8);
-          }
-          to {
-            opacity: 1;
-            transform: scale(1);
-          }
-        }
-      `}</style>
-    </div>
+            {/* Progress dots */}
+            <div className="mt-12 flex gap-2 justify-center">
+              {greetings.map((_, idx) => (
+                <motion.div
+                  key={idx}
+                  initial={{ width: 8 }}
+                  animate={{
+                    width: idx === currentIndex ? 32 : 8,
+                    backgroundColor:
+                      idx < currentIndex
+                        ? 'hsl(0, 0%, 98%)'
+                        : idx === currentIndex
+                          ? 'hsl(0, 0%, 70%)'
+                          : 'hsl(0, 0%, 20%)',
+                  }}
+                  transition={{ duration: 0.3 }}
+                  className="h-2 rounded-full"
+                />
+              ))}
+            </div>
+          </div>
+        </motion.div>
+      ) : (
+        <motion.div
+          key="exit"
+          initial={{ opacity: 1, y: 0 }}
+          animate={{ opacity: 0, y: '-100%' }}
+          transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+          className="fixed inset-0 z-[100] bg-background"
+        />
+      )}
+    </AnimatePresence>
   )
 }

@@ -1,181 +1,99 @@
 'use client'
 
-import { useState } from 'react'
-import { Code2, Database, Brain, Server, Zap, Cloud } from 'lucide-react'
+import { useRef } from 'react'
+import { motion, useScroll, useTransform, useInView } from 'framer-motion'
+import ParallaxSection from './ParallaxSection'
 
-const skillCategories = [
-  {
-    id: 'ml',
-    name: 'Machine Learning',
-    icon: Brain,
-    skills: ['TensorFlow', 'PyTorch', 'Scikit-learn', 'NLP', 'Computer Vision', 'Deep Learning'],
-  },
-  {
-    id: 'data',
-    name: 'Data Science',
-    icon: Zap,
-    skills: ['Pandas', 'NumPy', 'Data Analysis', 'Visualization', 'Feature Engineering', 'Statistics'],
-  },
-  {
-    id: 'backend',
-    name: 'Backend & APIs',
-    icon: Server,
-    skills: ['FastAPI', 'Python', 'PostgreSQL', 'REST APIs', 'MongoDB', 'GraphQL'],
-  },
-  {
-    id: 'frontend',
-    name: 'Full Stack',
-    icon: Code2,
-    skills: ['React', 'Next.js', 'TypeScript', 'Tailwind CSS', 'Web Development', 'UI/UX'],
-  },
+/*
+ * ============================================
+ * UPDATE YOUR SKILLS DATA HERE
+ * ============================================
+ */
+const skills = [
+  { name: 'React / Next.js', level: 95 },
+  { name: 'TypeScript', level: 90 },
+  { name: 'Node.js', level: 85 },
+  { name: 'Python', level: 80 },
+  { name: 'Tailwind CSS', level: 95 },
+  { name: 'PostgreSQL', level: 75 },
+  { name: 'Docker', level: 70 },
+  { name: 'AWS', level: 65 },
 ]
 
-const certifications = [
-  { id: 1, title: 'Machine Learning Specialization', issuer: 'Coursera', year: '2024' },
-  { id: 2, title: 'Deep Learning Advanced', issuer: 'fast.ai', year: '2023' },
-  { id: 3, title: 'Data Science Professional', issuer: 'DataCamp', year: '2023' },
-  { id: 4, title: 'Python Advanced Programming', issuer: 'Udacity', year: '2022' },
-  { id: 5, title: 'Full Stack Web Developer', issuer: 'freeCodeCamp', year: '2022' },
-]
-
-export default function Skills() {
-  const [selectedCategory, setSelectedCategory] = useState('ml')
+function SkillBar({ name, level, index }: { name: string; level: number; index: number }) {
+  const ref = useRef<HTMLDivElement>(null)
+  const isInView = useInView(ref, { once: true, margin: '-100px' })
 
   return (
-    <section className="py-20 px-4">
-      <div className="max-w-7xl mx-auto">
-        {/* Section Header */}
-        <div className="mb-16 text-center scroll-fade-in">
-          <h2 className="text-4xl sm:text-5xl font-bold mb-4 gradient-text">
-            Skills & Expertise
-          </h2>
-          <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-            ML & Data Science expertise combined with full-stack development capabilities.
-          </p>
-        </div>
-
-        {/* Skills Categories */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-16">
-          {/* Category Navigation */}
-          <div className="space-y-4">
-            {skillCategories.map((category) => {
-              const Icon = category.icon
-              return (
-                <button
-                  key={category.id}
-                  onClick={() => setSelectedCategory(category.id)}
-                  className={`w-full flex items-center gap-4 p-4 rounded-xl transition-all duration-300 text-left ${
-                    selectedCategory === category.id
-                      ? 'bg-gradient-to-r from-primary/20 to-secondary/20 border border-primary/50 shadow-lg shadow-primary/20'
-                      : 'bg-card border border-border hover:border-primary/30 hover:bg-card/50'
-                  }`}
-                >
-                  <div
-                    className={`p-3 rounded-lg transition-all ${
-                      selectedCategory === category.id
-                        ? 'bg-gradient-to-br from-primary to-secondary text-background'
-                        : 'bg-primary/10 text-primary'
-                    }`}
-                  >
-                    <Icon className="w-6 h-6" />
-                  </div>
-                  <div>
-                    <h3 className="font-bold text-foreground">{category.name}</h3>
-                    <p className="text-xs text-muted-foreground">{category.skills.length} skills</p>
-                  </div>
-                </button>
-              )
-            })}
-          </div>
-
-          {/* Selected Category Skills */}
-          <div className="space-y-4 animate-in fade-in">
-            {skillCategories
-              .filter((cat) => cat.id === selectedCategory)
-              .map((category) => (
-                <div key={category.id} className="space-y-4">
-                  <h3 className="text-2xl font-bold text-foreground mb-6">{category.name}</h3>
-                  <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
-                    {category.skills.map((skill) => (
-                      <div
-                        key={skill}
-                        className="group px-4 py-3 rounded-lg bg-card border border-primary/20 hover:border-primary/60 hover:bg-primary/5 transition-all duration-300 text-center cursor-pointer"
-                      >
-                        <p className="text-sm font-semibold text-foreground group-hover:text-primary transition-colors">
-                          {skill}
-                        </p>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              ))}
-          </div>
-        </div>
-
-        {/* Certifications */}
-        <div className="border-t border-border pt-16">
-          <h3 className="text-3xl font-bold mb-12 text-center">
-            <span className="bg-gradient-to-r from-secondary to-primary bg-clip-text text-transparent">
-              Certifications & Achievements
-            </span>
-          </h3>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
-            {certifications.map((cert, index) => (
-              <div
-                key={cert.id}
-                className="group p-4 rounded-xl bg-card border border-secondary/20 hover:border-secondary/60 hover:bg-secondary/5 transition-all duration-300 text-center animate-in fade-in slide-in-from-bottom-4"
-                style={{ animationDelay: `${index * 50}ms` }}
-              >
-                <div className="inline-flex items-center justify-center w-12 h-12 rounded-lg bg-gradient-to-br from-secondary to-secondary/50 text-background mb-3 mx-auto group-hover:shadow-lg group-hover:shadow-secondary/30 transition-all">
-                  <Zap className="w-6 h-6" />
-                </div>
-                <h4 className="font-bold text-sm text-foreground mb-1 line-clamp-2">{cert.title}</h4>
-                <p className="text-xs text-muted-foreground mb-2">{cert.issuer}</p>
-                <p className="text-xs text-secondary font-semibold">{cert.year}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {/* Why Hire Me */}
-        <div className="mt-20 p-8 rounded-2xl bg-gradient-to-r from-primary/10 to-secondary/10 border border-primary/20">
-          <h3 className="text-2xl sm:text-3xl font-bold mb-6">
-            <span className="bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
-              Why Hire Me?
-            </span>
-          </h3>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div>
-              <h4 className="font-bold text-primary mb-2 flex items-center gap-2">
-                <Code2 className="w-5 h-5" />
-                Quality Code
-              </h4>
-              <p className="text-sm text-muted-foreground">
-                I write clean, maintainable, and well-tested code following industry best practices and design patterns.
-              </p>
-            </div>
-            <div>
-              <h4 className="font-bold text-secondary mb-2 flex items-center gap-2">
-                <Zap className="w-5 h-5" />
-                Fast Learner
-              </h4>
-              <p className="text-sm text-muted-foreground">
-                Passionate about exploring new technologies and methodologies to stay ahead in the ever-evolving tech landscape.
-              </p>
-            </div>
-            <div>
-              <h4 className="font-bold text-primary mb-2 flex items-center gap-2">
-                <Server className="w-5 h-5" />
-                Full Stack
-              </h4>
-              <p className="text-sm text-muted-foreground">
-                I can handle projects from database design to production deployment with expertise in both frontend and backend.
-              </p>
-            </div>
-          </div>
-        </div>
+    <motion.div
+      ref={ref}
+      initial={{ opacity: 0, x: -40 }}
+      animate={isInView ? { opacity: 1, x: 0 } : {}}
+      transition={{ delay: index * 0.1, duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+      className="group"
+    >
+      <div className="flex justify-between items-center mb-3">
+        <span className="font-medium text-foreground group-hover:text-muted-foreground transition-colors">
+          {name}
+        </span>
+        <span className="text-sm text-muted-foreground">{level}%</span>
       </div>
-    </section>
+      <div className="h-2 rounded-full bg-muted/30 overflow-hidden">
+        <motion.div
+          className="h-full rounded-full bg-foreground"
+          initial={{ width: 0 }}
+          animate={isInView ? { width: `${level}%` } : {}}
+          transition={{ delay: index * 0.1 + 0.3, duration: 1, ease: [0.16, 1, 0.3, 1] }}
+        />
+      </div>
+    </motion.div>
+  )
+}
+
+export default function Skills() {
+  const ref = useRef<HTMLElement>(null)
+  
+  const { scrollYProgress } = useScroll({
+    target: ref,
+    offset: ['start end', 'end start'],
+  })
+
+  const y = useTransform(scrollYProgress, [0, 1], ['0%', '30%'])
+
+  return (
+    <ParallaxSection 
+      className="py-32 px-4" 
+      bgSpeed={0.2}
+    >
+      <section ref={ref} className="max-w-5xl mx-auto">
+        {/* Section Header */}
+        <motion.div 
+          className="text-center mb-20"
+          style={{ y }}
+        >
+          <motion.h2
+            initial={{ opacity: 0, y: 40 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+            className="section-heading text-foreground"
+          >
+            SKILLS
+          </motion.h2>
+        </motion.div>
+
+        {/* Skills Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12">
+          {skills.map((skill, index) => (
+            <SkillBar
+              key={skill.name}
+              name={skill.name}
+              level={skill.level}
+              index={index}
+            />
+          ))}
+        </div>
+      </section>
+    </ParallaxSection>
   )
 }

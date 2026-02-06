@@ -1,15 +1,23 @@
 import React from "react"
 import type { Metadata } from 'next'
-import { Geist, Geist_Mono } from 'next/font/google'
+import { Inter, Bebas_Neue } from 'next/font/google'
 
 import './globals.css'
 
-const _geist = Geist({ subsets: ['latin'] })
-const _geistMono = Geist_Mono({ subsets: ['latin'] })
+const inter = Inter({ 
+  subsets: ['latin'],
+  variable: '--font-inter'
+})
+
+const bebasNeue = Bebas_Neue({ 
+  subsets: ['latin'],
+  weight: '400',
+  variable: '--font-bebas'
+})
 
 export const metadata: Metadata = {
-  title: 'Your Name | Developer & Fitness Enthusiast',
-  description: 'Full-stack developer portfolio combining passion for coding and fitness. Explore my projects, skills, and experience.',
+  title: 'Your Name | Creative Developer',
+  description: 'Premium portfolio showcasing creative development work, skills, and experience.',
   generator: 'v0.app',
 }
 
@@ -19,7 +27,7 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" className={`${inter.variable} ${bebasNeue.variable}`}>
       <body className="font-sans antialiased">{children}</body>
     </html>
   )

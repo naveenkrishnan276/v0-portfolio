@@ -1,126 +1,161 @@
-import { ExternalLink, Github, ArrowRight } from 'lucide-react'
+'use client'
 
+import { useRef } from 'react'
+import { motion, useScroll, useTransform } from 'framer-motion'
+import { ExternalLink, Github } from 'lucide-react'
+import ParallaxSection from './ParallaxSection'
+
+/*
+ * ============================================
+ * UPDATE YOUR PROJECTS DATA HERE
+ * ============================================
+ */
 const projects = [
   {
     id: 1,
-    title: 'Sentiment Analysis Engine',
-    description: 'NLP-based sentiment analysis tool processing real-time social media data with 94% accuracy.',
-    tech: ['Python', 'TensorFlow', 'FastAPI', 'PostgreSQL'],
+    title: 'Project One',
+    description: 'A modern web application showcasing innovative design and seamless user experience.',
+    tech: ['React', 'Next.js', 'TypeScript', 'Tailwind'],
     link: '#',
     github: '#',
   },
   {
     id: 2,
-    title: 'Image Classification System',
-    description: 'Deep learning model for image recognition with transfer learning, achieving state-of-the-art accuracy.',
-    tech: ['PyTorch', 'ResNet', 'FastAPI', 'Next.js'],
+    title: 'Project Two',
+    description: 'Full-stack solution with robust backend architecture and real-time features.',
+    tech: ['Node.js', 'Express', 'PostgreSQL', 'Docker'],
     link: '#',
     github: '#',
   },
   {
     id: 3,
-    title: 'Predictive Analytics Dashboard',
-    description: 'Time series forecasting dashboard for financial market predictions using LSTM networks.',
-    tech: ['React', 'FastAPI', 'PostgreSQL', 'Recharts'],
-    link: '#',
-    github: '#',
-  },
-  {
-    id: 4,
-    title: 'Recommendation Engine',
-    description: 'Collaborative filtering ML model providing personalized recommendations with real-time user analytics.',
-    tech: ['Python', 'Scikit-learn', 'FastAPI', 'MongoDB'],
+    title: 'Project Three',
+    description: 'AI-powered platform delivering intelligent insights and automation.',
+    tech: ['Python', 'FastAPI', 'React', 'MongoDB'],
     link: '#',
     github: '#',
   },
 ]
 
-export default function Projects() {
+function ProjectCard({ 
+  project, 
+  index 
+}: { 
+  project: typeof projects[0]
+  index: number 
+}) {
+  const ref = useRef<HTMLDivElement>(null)
+  
+  const { scrollYProgress } = useScroll({
+    target: ref,
+    offset: ['start end', 'center center'],
+  })
+
+  const y = useTransform(scrollYProgress, [0, 1], [100, 0])
+  const opacity = useTransform(scrollYProgress, [0, 0.3, 1], [0, 0.5, 1])
+  const scale = useTransform(scrollYProgress, [0, 1], [0.9, 1])
+
   return (
-    <section className="py-20 px-4">
-      <div className="max-w-7xl mx-auto">
-        {/* Section Header */}
-        <div className="mb-16 text-center scroll-fade-in">
-          <h2 className="text-4xl sm:text-5xl font-bold mb-4 gradient-text">
-            Featured Projects
-          </h2>
-          <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-            Showcasing my best work combining cutting-edge technology with clean, scalable architecture.
+    <motion.div
+      ref={ref}
+      style={{ y, opacity, scale }}
+      className="group"
+    >
+      <div className="glass-effect rounded-3xl overflow-hidden border border-transparent hover:border-muted-foreground/20 transition-all duration-500">
+        {/* Top bar */}
+        <div className="h-px bg-gradient-to-r from-transparent via-muted-foreground/30 to-transparent" />
+
+        {/* Content */}
+        <div className="p-8 md:p-10 relative">
+          {/* Project number */}
+          <span className="text-6xl font-display font-normal text-muted/10 absolute top-4 right-6">
+            0{project.id}
+          </span>
+
+          {/* Title */}
+          <h3 className="text-3xl md:text-4xl font-display font-normal uppercase tracking-wider text-foreground mb-4">
+            {project.title}
+          </h3>
+
+          {/* Description */}
+          <p className="text-muted-foreground text-lg leading-relaxed mb-8 max-w-2xl">
+            {project.description}
           </p>
-        </div>
 
-        {/* Projects Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          {projects.map((project, index) => (
-            <div
-              key={project.id}
-              className="glass-effect group relative rounded-2xl overflow-hidden hover:border-primary/80 transition-all duration-300 hover:shadow-lg hover:shadow-primary/30 scroll-fade-in"
-              style={{ animationDelay: `${index * 150}ms` }}
+          {/* Tech Stack */}
+          <div className="flex flex-wrap gap-3 mb-8">
+            {project.tech.map((tech) => (
+              <span
+                key={tech}
+                className="px-4 py-2 text-sm rounded-full bg-muted/20 text-foreground border border-border hover:border-muted-foreground/30 transition-colors"
+              >
+                {tech}
+              </span>
+            ))}
+          </div>
+
+          {/* Links */}
+          <div className="flex gap-4">
+            <a
+              href={project.link}
+              className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-foreground text-background font-semibold hover:bg-foreground/90 transition-all"
             >
-              {/* Project Icon Background */}
-              <div className="h-32 relative overflow-hidden flex items-center justify-center">
-                <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-secondary/20" />
-                <div className="relative z-10 text-primary/60 group-hover:text-primary transition-colors">
-                  <svg className="w-12 h-12" fill="currentColor" viewBox="0 0 20 20">
-                    <path d="M11 3a1 1 0 10-2 0v1a1 1 0 102 0V3zM15.657 5.757a1 1 0 00-1.414-1.414l-.707.707a1 1 0 001.414 1.414l.707-.707zM18 10a1 1 0 01-1 1h-1a1 1 0 110-2h1a1 1 0 011 1zM16.243 15.657a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414l.707.707zM10 18a1 1 0 01-1-1v-1a1 1 0 112 0v1a1 1 0 01-1 1zM5.757 16.243a1 1 0 00-1.414-1.414l-.707.707a1 1 0 001.414 1.414l.707-.707zM4 10a1 1 0 01-1-1V8a1 1 0 112 0v1a1 1 0 01-1 1zM5.757 5.757a1 1 0 000-1.414L5.05 3.636a1 1 0 10-1.414 1.414l.707.707z" />
-                  </svg>
-                </div>
-              </div>
-
-              {/* Project Content */}
-              <div className="p-6">
-                <h3 className="text-xl font-bold mb-2 group-hover:text-primary transition-colors">
-                  {project.title}
-                </h3>
-                <p className="text-muted-foreground text-sm mb-4 line-clamp-2">
-                  {project.description}
-                </p>
-
-                {/* Tech Stack */}
-                <div className="flex flex-wrap gap-2 mb-6">
-                  {project.tech.map((tech) => (
-                    <span
-                      key={tech}
-                      className="px-3 py-1 text-xs rounded-full bg-primary/10 text-primary border border-primary/30 hover:border-primary/60 transition-all"
-                    >
-                      {tech}
-                    </span>
-                  ))}
-                </div>
-
-                {/* Links */}
-                <div className="flex gap-4 pt-4 border-t border-border">
-                  <a
-                    href={project.link}
-                    className="flex items-center gap-2 text-sm font-medium text-primary hover:text-secondary transition-colors group/link"
-                  >
-                    <span>View Project</span>
-                    <ExternalLink className="w-4 h-4 group-hover/link:translate-x-1 group-hover/link:-translate-y-1 transition-transform" />
-                  </a>
-                  <a
-                    href={project.github}
-                    className="flex items-center gap-2 text-sm font-medium text-secondary hover:text-primary transition-colors group/link"
-                  >
-                    <span>Code</span>
-                    <Github className="w-4 h-4 group-hover/link:translate-x-1 group-hover/link:-translate-y-1 transition-transform" />
-                  </a>
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-
-        {/* View All Projects */}
-        <div className="mt-16 text-center">
-          <a
-            href="#"
-            className="inline-flex items-center gap-2 px-8 py-4 rounded-lg border-2 border-primary text-primary font-semibold hover:bg-primary/10 transition-all duration-300"
-          >
-            View All Projects
-            <ArrowRight className="w-5 h-5" />
-          </a>
+              Live Project
+              <ExternalLink className="w-4 h-4" />
+            </a>
+            <a
+              href={project.github}
+              className="inline-flex items-center gap-2 px-6 py-3 rounded-full border border-border text-foreground font-semibold hover:border-muted-foreground/50 transition-all"
+            >
+              Source
+              <Github className="w-4 h-4" />
+            </a>
+          </div>
         </div>
       </div>
-    </section>
+    </motion.div>
+  )
+}
+
+export default function Projects() {
+  const ref = useRef<HTMLElement>(null)
+  
+  const { scrollYProgress } = useScroll({
+    target: ref,
+    offset: ['start end', 'end start'],
+  })
+
+  const y = useTransform(scrollYProgress, [0, 1], ['0%', '20%'])
+
+  return (
+    <ParallaxSection 
+      className="py-32 px-4" 
+      bgSpeed={0.25}
+    >
+      <section ref={ref} className="max-w-5xl mx-auto">
+        {/* Section Header */}
+        <motion.div 
+          className="text-center mb-20"
+          style={{ y }}
+        >
+          <motion.h2
+            initial={{ opacity: 0, y: 40 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+            className="section-heading text-foreground"
+          >
+            PROJECTS
+          </motion.h2>
+        </motion.div>
+
+        {/* Projects Stack */}
+        <div className="space-y-12">
+          {projects.map((project, index) => (
+            <ProjectCard key={project.id} project={project} index={index} />
+          ))}
+        </div>
+      </section>
+    </ParallaxSection>
   )
 }

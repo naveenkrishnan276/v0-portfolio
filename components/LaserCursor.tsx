@@ -7,30 +7,29 @@ export default function LaserCursor() {
   const trailRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
+    // Disable on touch devices
+    if (window.matchMedia('(pointer: coarse)').matches) {
+      return
+    }
+
     const handleMouseMove = (e: MouseEvent) => {
       if (cursorRef.current) {
         cursorRef.current.style.left = `${e.clientX}px`
         cursorRef.current.style.top = `${e.clientY}px`
-
-        // Set CSS variables for animation
-        document.documentElement.style.setProperty('--mouse-x', `${e.clientX}px`)
-        document.documentElement.style.setProperty('--mouse-y', `${e.clientY}px`)
       }
 
       // Create trail effect
       if (trailRef.current && Math.random() > 0.7) {
         const trail = document.createElement('div')
-        trail.className = 'laser-trail'
         trail.style.position = 'fixed'
         trail.style.left = `${e.clientX}px`
         trail.style.top = `${e.clientY}px`
         trail.style.width = '4px'
         trail.style.height = '4px'
-        trail.style.background = 'radial-gradient(circle, hsl(180, 100%, 50%), transparent)'
+        trail.style.background = 'rgba(255, 255, 255, 0.6)'
         trail.style.borderRadius = '50%'
         trail.style.pointerEvents = 'none'
         trail.style.zIndex = '9998'
-        trail.style.boxShadow = '0 0 6px hsl(180, 100%, 50%)'
         trail.style.animation = 'trail-fade 0.6s ease-out forwards'
 
         trailRef.current.appendChild(trail)
