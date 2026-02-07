@@ -27,7 +27,7 @@ export default function ParallaxSection({
   const opacity = useTransform(scrollYProgress, [0, 0.2, 0.8, 1], [0.5, 1, 1, 0.5])
 
   return (
-    <section ref={ref} className={`relative overflow-hidden ${className}`}>
+    <section ref={ref} className={`relative overflow-hidden ${className}`} style={{ position: 'relative' }}>
       {/* Parallax background elements - subtle grey gradients */}
       {showOrbs && (
         <motion.div 
@@ -90,7 +90,7 @@ export function ScrollReveal({
   return (
     <motion.div
       ref={ref}
-      style={{ x, y: yVal, opacity: opacityVal }}
+      style={{ x, y: yVal, opacity: opacityVal, position: 'relative' }}
       transition={{ delay, duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
       className={className}
     >
