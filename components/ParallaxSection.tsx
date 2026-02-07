@@ -90,9 +90,9 @@ export function ScrollReveal({
   return (
     <motion.div
       ref={ref}
-      style={{ x, y: yVal, opacity: opacityVal, position: 'relative' }}
+      style={{ x, y: yVal, opacity: opacityVal }}
       transition={{ delay, duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-      className={className}
+      className={`relative ${className}`}
     >
       {children}
     </motion.div>

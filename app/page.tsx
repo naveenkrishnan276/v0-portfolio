@@ -55,7 +55,7 @@ export default function Page() {
         <SplashScreen onComplete={() => setShowSplash(false)} />
       )}
 
-      <main className="min-h-screen bg-background text-foreground overflow-x-hidden">
+      <main className="min-h-screen bg-background text-foreground overflow-x-hidden relative">
         <Header onNavigate={scrollToSection} activeSection={activeSection} />
         
         <div id="hero">

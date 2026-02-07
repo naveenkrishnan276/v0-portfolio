@@ -50,19 +50,20 @@
   * {
     @apply border-border;
   }
+  html {
+    scroll-behavior: smooth;
+    position: relative;
+  }
   body {
     @apply bg-background text-foreground;
     cursor: none;
+    position: relative;
   }
   
   /* Show cursor on admin pages */
   .cursor-visible,
   .cursor-visible * {
     cursor: auto !important;
-  }
-  
-  html {
-    scroll-behavior: smooth;
   }
 }
 
