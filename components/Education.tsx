@@ -148,19 +148,10 @@ export default function Education() {
   useEffect(() => {
     async function fetchEducation() {
       try {
-        const url = `${API_BASE}/api/education`
-        console.log('[v0] Fetching education from:', url)
-        const response = await fetch(url, {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        })
-        console.log('[v0] Education response status:', response.status)
+        const response = await fetch(`${API_BASE}/api/education`)
         if (response.ok) {
           const data: EducationItem[] = await response.json()
-          console.log('[v0] Education data received:', data)
-          if (data.length > 0) {
+          if (data && Array.isArray(data) && data.length > 0) {
             setEducation(data.map(e => ({
               id: e.id,
               type: e.education_type === 'work_experience' ? 'Work' : 'Education',
@@ -171,11 +162,9 @@ export default function Education() {
               endDate: e.end_date || 'Present',
             })))
           }
-        } else {
-          console.log('[v0] Education API error response')
         }
       } catch (error) {
-        console.log('[v0] Education fetch error:', error)
+        console.error('Failed to fetch education:', error)
       } finally {
         setIsLoading(false)
       }

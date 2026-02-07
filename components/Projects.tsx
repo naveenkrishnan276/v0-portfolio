@@ -149,26 +149,15 @@ export default function Projects() {
   useEffect(() => {
     async function fetchProjects() {
       try {
-        const url = `${API_BASE}/api/projects`
-        console.log('[v0] Fetching projects from:', url)
-        const response = await fetch(url, {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        })
-        console.log('[v0] Projects response status:', response.status)
+        const response = await fetch(`${API_BASE}/api/projects`)
         if (response.ok) {
           const data = await response.json()
-          console.log('[v0] Projects data received:', data)
-          if (data.length > 0) {
+          if (data && Array.isArray(data) && data.length > 0) {
             setProjects(data)
           }
-        } else {
-          console.log('[v0] Projects API error response')
         }
       } catch (error) {
-        console.log('[v0] Projects fetch error:', error)
+        console.error('Failed to fetch projects:', error)
       } finally {
         setIsLoading(false)
       }

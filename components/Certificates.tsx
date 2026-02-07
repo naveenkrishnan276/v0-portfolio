@@ -128,19 +128,10 @@ export default function Certificates() {
   useEffect(() => {
     async function fetchCertificates() {
       try {
-        const url = `${API_BASE}/api/education/certifications/`
-        console.log('[v0] Fetching certificates from:', url)
-        const response = await fetch(url, {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        })
-        console.log('[v0] Certificates response status:', response.status)
+        const response = await fetch(`${API_BASE}/api/education/certifications/`)
         if (response.ok) {
           const data: CertificateFromAPI[] = await response.json()
-          console.log('[v0] Certificates data received:', data)
-          if (data.length > 0) {
+          if (data && Array.isArray(data) && data.length > 0) {
             const mapped: DisplayCertificate[] = data.map(cert => ({
               id: cert.id,
               title: cert.title,
@@ -150,11 +141,9 @@ export default function Certificates() {
             }))
             setCertificates(mapped)
           }
-        } else {
-          console.log('[v0] Certificates API error response')
         }
       } catch (error) {
-        console.log('[v0] Certificates fetch error:', error)
+        console.error('Failed to fetch certificates:', error)
       }
     }
     fetchCertificates()
