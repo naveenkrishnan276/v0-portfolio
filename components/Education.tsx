@@ -145,7 +145,7 @@ export default function Education() {
             transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
             className="section-heading text-foreground"
           >
-            EXPERIENCE
+            EDUCATION
           </motion.h2>
         </motion.div>
 

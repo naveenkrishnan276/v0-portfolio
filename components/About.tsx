@@ -18,7 +18,6 @@ export default function About() {
     <ParallaxSection 
       className="py-32 px-4" 
       bgSpeed={0.2}
-      orbColors={['hsl(200, 100%, 60%)', 'hsl(270, 100%, 65%)', 'hsl(330, 100%, 65%)']}
     >
       <section ref={ref} className="max-w-5xl mx-auto">
         {/* Section Header */}

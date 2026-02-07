@@ -45,16 +45,7 @@ export default function Hero() {
         className="relative z-10 text-center px-4 max-w-5xl mx-auto"
         style={{ opacity, scale }}
       >
-        {/* Pre-heading */}
-        <motion.p
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.2, duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-          className="text-sm sm:text-base uppercase tracking-[0.3em] text-muted-foreground mb-6"
-        >
-          {/* UPDATE: Change your subtitle */}
-          Creative Developer
-        </motion.p>
+       
 
         {/* Main heading */}
         <motion.h1
@@ -67,7 +58,7 @@ export default function Hero() {
           <br />
           <span className="text-foreground">
             {/* UPDATE: Change "YOUR NAME" to your actual name */}
-            YOUR NAME
+            NAVEEN
           </span>
         </motion.h1>
 
@@ -93,7 +84,7 @@ export default function Hero() {
             href="#projects"
             className="inline-flex items-center gap-3 px-8 py-4 text-lg font-semibold rounded-full bg-foreground text-background hover:bg-foreground/90 transition-all"
           >
-            View My Work
+            EXPLORE
           </a>
         </motion.div>
       </motion.div>

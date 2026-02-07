@@ -11,10 +11,10 @@ import ParallaxSection from './ParallaxSection'
  * ============================================
  */
 const socialLinks = [
-  { id: 1, name: 'LinkedIn', icon: Linkedin, url: '#' },
-  { id: 2, name: 'GitHub', icon: Github, url: '#' },
-  { id: 3, name: 'Twitter', icon: Twitter, url: '#' },
-  { id: 4, name: 'Email', icon: Mail, url: 'mailto:hello@yourname.com' },
+  { id: 1, name: 'LinkedIn', icon: Linkedin, url: 'https://www.linkedin.com/in/naveen-krishnan-r-4446952aa' },
+  { id: 2, name: 'GitHub', icon: Github, url: 'https://github.com/naveenkrishnan276' },
+  
+  { id: 3, name: 'Email', icon: Mail, url: 'mailto:naveenkrishnan276@gmail.com' },
 ]
 
 export default function Contact() {
@@ -150,7 +150,7 @@ export default function Contact() {
         >
           <p className="text-sm text-muted-foreground">
             {/* UPDATE: Change your name */}
-            © {new Date().getFullYear()} Your Name. Built with Next.js & Framer Motion
+            © {new Date().getFullYear()} Naveen Krishnan. Built with Next.js & Framer Motion
           </p>
         </motion.div>
       </section>

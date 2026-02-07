@@ -10,14 +10,13 @@ import ParallaxSection from './ParallaxSection'
  * ============================================
  */
 const skills = [
-  { name: 'React / Next.js', level: 95 },
-  { name: 'TypeScript', level: 90 },
-  { name: 'Node.js', level: 85 },
+  { name: 'JAVA', level: 90 },
+  { name: 'React / Next.js', level: 85 },
   { name: 'Python', level: 80 },
-  { name: 'Tailwind CSS', level: 95 },
+  { name: 'CSS', level: 95 },
   { name: 'PostgreSQL', level: 75 },
+  { name: 'DSA', level: 80 },
   { name: 'Docker', level: 70 },
-  { name: 'AWS', level: 65 },
 ]
 
 function SkillBar({ name, level, index }: { name: string; level: number; index: number }) {
