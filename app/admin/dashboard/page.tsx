@@ -523,7 +523,17 @@ function AddFormModal({
         onSuccess()
       } else {
         const data = await res.json()
-        setError(data.detail || 'Failed to add item')
+        // Handle validation errors which come as an array of objects
+        if (Array.isArray(data.detail)) {
+          const messages = data.detail.map((err: { msg?: string; loc?: string[] }) => 
+            err.msg || 'Validation error'
+          ).join(', ')
+          setError(messages)
+        } else if (typeof data.detail === 'string') {
+          setError(data.detail)
+        } else {
+          setError('Failed to add item')
+        }
       }
     } catch (err) {
       setError('Connection error')
