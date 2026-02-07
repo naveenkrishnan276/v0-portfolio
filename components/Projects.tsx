@@ -6,7 +6,7 @@ import { ExternalLink, Github } from 'lucide-react'
 import ParallaxSection from './ParallaxSection'
 
 // API base URL - change this when deploying
-const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'
+const API_BASE = 'https://gracious-spirit-production-7500.up.railway.app'
 
 // Project type from API
 interface Project {
@@ -149,16 +149,10 @@ export default function Projects() {
   useEffect(() => {
     async function fetchProjects() {
       try {
-        const url = `${API_BASE}/api/projects`
-        console.log('[v0] API_BASE:', API_BASE)
-        console.log('[v0] Fetching from URL:', url)
-        const response = await fetch(url)
-        console.log('[v0] Response status:', response.status)
+        const response = await fetch(`${API_BASE}/api/projects`)
         if (response.ok) {
           const data = await response.json()
-          console.log('[v0] Data received:', data)
           if (data && Array.isArray(data) && data.length > 0) {
-            console.log('[v0] Setting projects data')
             setProjects(data)
           }
         }

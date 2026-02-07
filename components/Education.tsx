@@ -6,7 +6,7 @@ import { Calendar, MapPin, GraduationCap, Briefcase } from 'lucide-react'
 import ParallaxSection from './ParallaxSection'
 
 // API base URL - change this when deploying
-const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'
+const API_BASE = 'https://gracious-spirit-production-7500.up.railway.app'
 
 // Education type from API
 interface EducationItem {

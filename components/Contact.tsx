@@ -6,7 +6,7 @@ import { Mail, Linkedin, Github, Twitter, Send, Phone } from 'lucide-react'
 import ParallaxSection from './ParallaxSection'
 
 // API base URL - uses environment variable in production
-const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'
+const API_BASE = 'https://gracious-spirit-production-7500.up.railway.app'
 
 /*
  * ============================================
