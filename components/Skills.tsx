@@ -75,10 +75,16 @@ export default function Skills() {
   useEffect(() => {
     async function fetchSkills() {
       try {
-        const response = await fetch(`${API_BASE}/api/skills`)
+        const url = `${API_BASE}/api/skills`
+        console.log('[v0] API_BASE:', API_BASE)
+        console.log('[v0] Fetching skills from URL:', url)
+        const response = await fetch(url)
+        console.log('[v0] Skills response status:', response.status)
         if (response.ok) {
           const data: Skill[] = await response.json()
+          console.log('[v0] Skills data received:', data)
           if (data && Array.isArray(data) && data.length > 0) {
+            console.log('[v0] Setting skills data')
             setSkills(data.map(s => ({
               name: s.name,
               level: levelToPercent(s.level)

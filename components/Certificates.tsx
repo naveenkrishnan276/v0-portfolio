@@ -6,7 +6,7 @@ import { Award, ExternalLink } from 'lucide-react'
 import ParallaxSection from './ParallaxSection'
 
 // API base URL
-const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'
+const API_BASE = 'https://gracious-spirit-production-7500.up.railway.app/'
 
 // Certificate type from API
 interface CertificateFromAPI {
@@ -62,15 +62,15 @@ const fallbackCertificates: DisplayCertificate[] = [
   },
 ]
 
-function CertificateCard({ 
-  cert, 
-  index 
-}: { 
+function CertificateCard({
+  cert,
+  index
+}: {
   cert: DisplayCertificate
-  index: number 
+  index: number
 }) {
   const ref = useRef<HTMLDivElement>(null)
-  
+
   const { scrollYProgress } = useScroll({
     target: ref,
     offset: ['start end', 'center center'],
@@ -124,7 +124,7 @@ function CertificateCard({
 export default function Certificates() {
   const ref = useRef<HTMLElement>(null)
   const [certificates, setCertificates] = useState<DisplayCertificate[]>(fallbackCertificates)
-  
+
   useEffect(() => {
     async function fetchCertificates() {
       try {
@@ -148,7 +148,7 @@ export default function Certificates() {
     }
     fetchCertificates()
   }, [])
-  
+
   const { scrollYProgress } = useScroll({
     target: ref,
     offset: ['start end', 'end start'],
@@ -157,13 +157,13 @@ export default function Certificates() {
   const y = useTransform(scrollYProgress, [0, 1], ['0%', '20%'])
 
   return (
-    <ParallaxSection 
-      className="py-32 px-4" 
+    <ParallaxSection
+      className="py-32 px-4"
       bgSpeed={0.15}
     >
       <section ref={ref} className="max-w-6xl mx-auto">
         {/* Section Header */}
-        <motion.div 
+        <motion.div
           className="text-center mb-20"
           style={{ y }}
         >

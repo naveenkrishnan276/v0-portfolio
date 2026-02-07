@@ -149,10 +149,16 @@ export default function Projects() {
   useEffect(() => {
     async function fetchProjects() {
       try {
-        const response = await fetch(`${API_BASE}/api/projects`)
+        const url = `${API_BASE}/api/projects`
+        console.log('[v0] API_BASE:', API_BASE)
+        console.log('[v0] Fetching from URL:', url)
+        const response = await fetch(url)
+        console.log('[v0] Response status:', response.status)
         if (response.ok) {
           const data = await response.json()
+          console.log('[v0] Data received:', data)
           if (data && Array.isArray(data) && data.length > 0) {
+            console.log('[v0] Setting projects data')
             setProjects(data)
           }
         }
