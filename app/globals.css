@@ -55,6 +55,12 @@
     cursor: none;
   }
   
+  /* Show cursor on admin pages */
+  .cursor-visible,
+  .cursor-visible * {
+    cursor: auto !important;
+  }
+  
   html {
     scroll-behavior: smooth;
   }

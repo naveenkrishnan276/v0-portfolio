@@ -2,7 +2,7 @@
 
 import { useRef, useState } from 'react'
 import { motion, useScroll, useTransform } from 'framer-motion'
-import { Mail, Linkedin, Github, Twitter, Send } from 'lucide-react'
+import { Mail, Linkedin, Github, Twitter, Send, Phone } from 'lucide-react'
 import ParallaxSection from './ParallaxSection'
 
 /*
@@ -11,15 +11,50 @@ import ParallaxSection from './ParallaxSection'
  * ============================================
  */
 const socialLinks = [
-  { id: 1, name: 'LinkedIn', icon: Linkedin, url: 'https://www.linkedin.com/in/naveen-krishnan-r-4446952aa' },
+  { id: 1, name: 'LinkedIn', icon: Linkedin, url: 'https://www.linkedin.com/in/naveen-krishnan-r-4446952aa/' },
   { id: 2, name: 'GitHub', icon: Github, url: 'https://github.com/naveenkrishnan276' },
-  
-  { id: 3, name: 'Email', icon: Mail, url: 'mailto:naveenkrishnan276@gmail.com' },
+  { id: 3, name: 'Email', icon: Mail, url: 'https://mail.google.com/mail/?view=cm&fs=1&to=naveenkrishnan276@gmail.com' },
+]
+
+/*
+ * ============================================
+ * UPDATE YOUR CONTACT INFO HERE
+ * ============================================
+ */
+const contactInfo = [
+  {
+    id: 1,
+    title: 'Email',
+    value: 'naveenkrishnan276@gmail.com',
+    icon: Mail,
+    href: 'mailto:naveenkrishnan276@gmail.com',
+    color: 'from-cyan-500 to-blue-500',
+  },
+  {
+    id: 2,
+    title: 'Phone',
+    value: '+91-9361218299',
+    icon: Phone,
+    href: 'tel:+919361218299',
+    color: 'from-pink-500 to-rose-500',
+  },
+  {
+    id: 3,
+    title: 'LinkedIn',
+    value: 'View Profile',
+    icon: Linkedin,
+    href: 'https://www.linkedin.com/in/naveen-krishnan-r-4446952aa/',
+    color: 'from-blue-500 to-indigo-500',
+  },
 ]
 
 export default function Contact() {
   const ref = useRef<HTMLElement>(null)
   const [formData, setFormData] = useState({ name: '', email: '', message: '' })
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle')
+  const [errorMessage, setErrorMessage] = useState('')
+  const [fieldErrors, setFieldErrors] = useState<{ name?: string; email?: string; message?: string }>({})
   
   const { scrollYProgress } = useScroll({
     target: ref,
@@ -28,9 +63,51 @@ export default function Contact() {
 
   const y = useTransform(scrollYProgress, [0, 1], ['0%', '20%'])
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    console.log('Form submitted:', formData)
+    setIsSubmitting(true)
+    setSubmitStatus('idle')
+    setErrorMessage('')
+    setFieldErrors({})
+    
+    try {
+      const response = await fetch('http://localhost:8000/api/contact/messages', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData),
+      })
+      
+      if (response.ok) {
+        setSubmitStatus('success')
+        setFormData({ name: '', email: '', message: '' })
+      } else {
+        const errorData = await response.json()
+        setSubmitStatus('error')
+        
+        // Parse validation errors from FastAPI
+        if (errorData.detail && Array.isArray(errorData.detail)) {
+          const errors: { name?: string; email?: string; message?: string } = {}
+          errorData.detail.forEach((err: { loc: string[]; msg: string }) => {
+            const field = err.loc[err.loc.length - 1] as 'name' | 'email' | 'message'
+            if (field === 'name' || field === 'email' || field === 'message') {
+              errors[field] = err.msg
+            }
+          })
+          setFieldErrors(errors)
+          setErrorMessage('Please fix the errors above')
+        } else if (typeof errorData.detail === 'string') {
+          setErrorMessage(errorData.detail)
+        } else {
+          setErrorMessage('Failed to send message. Please check your input.')
+        }
+      }
+    } catch (error) {
+      console.error('Error:', error)
+      setSubmitStatus('error')
+      setErrorMessage('Cannot connect to server. Please try again later.')
+    } finally {
+      setIsSubmitting(false)
+    }
   }
 
   return (
@@ -55,6 +132,34 @@ export default function Contact() {
           </motion.h2>
         </motion.div>
 
+        {/* Contact Info Cards */}
+        <motion.div
+          initial={{ opacity: 0, y: 40 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
+          className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12"
+        >
+          {contactInfo.map((info) => {
+            const Icon = info.icon
+            return (
+              <a
+                key={info.id}
+                href={info.href}
+                target={info.id === 3 ? '_blank' : undefined}
+                rel={info.id === 3 ? 'noopener noreferrer' : undefined}
+                className="glass-effect rounded-2xl p-6 border border-transparent hover:border-muted-foreground/20 transition-all duration-300 hover:-translate-y-1 group"
+              >
+                <div className={`w-14 h-14 rounded-xl bg-gradient-to-br ${info.color} flex items-center justify-center mb-4 opacity-80 group-hover:opacity-100 transition-opacity`}>
+                  <Icon className="w-6 h-6 text-white" />
+                </div>
+                <h3 className="text-lg font-semibold text-foreground mb-1">{info.title}</h3>
+                <p className="text-muted-foreground text-sm">{info.value}</p>
+              </a>
+            )
+          })}
+        </motion.div>
+
         {/* Contact Form */}
         <motion.div
           initial={{ opacity: 0, y: 60 }}
@@ -73,10 +178,16 @@ export default function Contact() {
                   type="text"
                   id="name"
                   value={formData.name}
-                  onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                  className="w-full px-4 py-3 rounded-xl bg-input border border-border text-foreground placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-muted-foreground/30 focus:border-muted-foreground/50 transition-all"
+                  onChange={(e) => {
+                    setFormData({ ...formData, name: e.target.value })
+                    if (fieldErrors.name) setFieldErrors({ ...fieldErrors, name: undefined })
+                  }}
+                  className={`w-full px-4 py-3 rounded-xl bg-input border ${fieldErrors.name ? 'border-red-500' : 'border-border'} text-foreground placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-muted-foreground/30 focus:border-muted-foreground/50 transition-all`}
                   placeholder="Your name"
                 />
+                <p className={`text-xs mt-1 ${fieldErrors.name ? 'text-red-500' : 'text-muted-foreground'}`}>
+                  {fieldErrors.name || 'Min. 2 characters'}
+                </p>
               </div>
               <div>
                 <label htmlFor="email" className="block text-sm font-medium text-foreground mb-2">
@@ -86,10 +197,16 @@ export default function Contact() {
                   type="email"
                   id="email"
                   value={formData.email}
-                  onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                  className="w-full px-4 py-3 rounded-xl bg-input border border-border text-foreground placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-muted-foreground/30 focus:border-muted-foreground/50 transition-all"
+                  onChange={(e) => {
+                    setFormData({ ...formData, email: e.target.value })
+                    if (fieldErrors.email) setFieldErrors({ ...fieldErrors, email: undefined })
+                  }}
+                  className={`w-full px-4 py-3 rounded-xl bg-input border ${fieldErrors.email ? 'border-red-500' : 'border-border'} text-foreground placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-muted-foreground/30 focus:border-muted-foreground/50 transition-all`}
                   placeholder="your@email.com"
                 />
+                <p className={`text-xs mt-1 ${fieldErrors.email ? 'text-red-500' : 'text-muted-foreground'}`}>
+                  {fieldErrors.email || 'Valid email address'}
+                </p>
               </div>
             </div>
             <div>
@@ -100,18 +217,32 @@ export default function Contact() {
                 id="message"
                 rows={5}
                 value={formData.message}
-                onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                className="w-full px-4 py-3 rounded-xl bg-input border border-border text-foreground placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-muted-foreground/30 focus:border-muted-foreground/50 transition-all resize-none"
+                onChange={(e) => {
+                  setFormData({ ...formData, message: e.target.value })
+                  if (fieldErrors.message) setFieldErrors({ ...fieldErrors, message: undefined })
+                }}
+                className={`w-full px-4 py-3 rounded-xl bg-input border ${fieldErrors.message ? 'border-red-500' : 'border-border'} text-foreground placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-muted-foreground/30 focus:border-muted-foreground/50 transition-all resize-none`}
                 placeholder="Your message..."
               />
+              <p className={`text-xs mt-1 ${fieldErrors.message ? 'text-red-500' : 'text-muted-foreground'}`}>
+                {fieldErrors.message || 'Min. 10 characters, max. 5000 characters'}
+              </p>
             </div>
             <button
               type="submit"
-              className="w-full md:w-auto inline-flex items-center justify-center gap-2 px-8 py-4 rounded-full bg-foreground text-background font-semibold hover:bg-foreground/90 transition-all"
+              disabled={isSubmitting}
+              className="w-full md:w-auto inline-flex items-center justify-center gap-2 px-8 py-4 rounded-full bg-foreground text-background font-semibold hover:bg-foreground/90 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              Send Message
+              {isSubmitting ? 'Sending...' : 'Send Message'}
               <Send className="w-5 h-5" />
             </button>
+            
+            {submitStatus === 'success' && (
+              <p className="text-green-500 mt-4">Message sent successfully! I'll get back to you soon.</p>
+            )}
+            {submitStatus === 'error' && errorMessage && (
+              <p className="text-red-500 mt-4">{errorMessage}</p>
+            )}
           </form>
         </motion.div>
 

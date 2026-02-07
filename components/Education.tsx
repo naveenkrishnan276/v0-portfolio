@@ -1,16 +1,39 @@
 'use client'
 
-import { useRef } from 'react'
+import { useRef, useState, useEffect } from 'react'
 import { motion, useScroll, useTransform } from 'framer-motion'
 import { Calendar, MapPin, GraduationCap, Briefcase } from 'lucide-react'
 import ParallaxSection from './ParallaxSection'
 
-/*
- * ============================================
- * UPDATE YOUR EDUCATION & EXPERIENCE DATA HERE
- * ============================================
- */
-const education = [
+// API base URL - change this when deploying
+const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'
+
+// Education type from API
+interface EducationItem {
+  id: number
+  title: string
+  institution: string
+  location: string | null
+  start_date: string | null
+  end_date: string | null
+  description: string | null
+  education_type: string
+  order: number
+}
+
+// Normalized education item for display
+interface DisplayEducation {
+  id: number
+  type: 'Education' | 'Work'
+  title: string
+  institution: string
+  location: string
+  startDate: string
+  endDate: string
+}
+
+// Fallback data if API is unavailable
+const fallbackEducation: DisplayEducation[] = [
   {
     id: 1,
     type: 'Education',
@@ -54,7 +77,7 @@ function TimelineItem({
   index,
   isLeft
 }: { 
-  item: typeof education[0]
+  item: DisplayEducation
   index: number
   isLeft: boolean
 }) {
@@ -119,6 +142,35 @@ function TimelineItem({
 
 export default function Education() {
   const ref = useRef<HTMLElement>(null)
+  const [education, setEducation] = useState<DisplayEducation[]>(fallbackEducation)
+  const [isLoading, setIsLoading] = useState(true)
+  
+  useEffect(() => {
+    async function fetchEducation() {
+      try {
+        const response = await fetch(`${API_BASE}/api/education`)
+        if (response.ok) {
+          const data: EducationItem[] = await response.json()
+          if (data.length > 0) {
+            setEducation(data.map(e => ({
+              id: e.id,
+              type: e.education_type === 'work_experience' ? 'Work' : 'Education',
+              title: e.title,
+              institution: e.institution,
+              location: e.location || '',
+              startDate: e.start_date || '',
+              endDate: e.end_date || 'Present',
+            })))
+          }
+        }
+      } catch (error) {
+        console.log('Using fallback education data')
+      } finally {
+        setIsLoading(false)
+      }
+    }
+    fetchEducation()
+  }, [])
   
   const { scrollYProgress } = useScroll({
     target: ref,

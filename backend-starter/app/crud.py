@@ -117,7 +117,7 @@ def delete_education(db: Session, education_id: int):
 
 def get_certifications(db: Session, skip: int = 0, limit: int = 100):
     """Get all certifications"""
-    return db.query(models.Certification).order_by(models.Certification.created_at.desc()).offset(skip).limit(limit).all()
+    return db.query(models.Certification).offset(skip).limit(limit).all()
 
 def get_certification(db: Session, cert_id: int):
     """Get a single certification by ID"""

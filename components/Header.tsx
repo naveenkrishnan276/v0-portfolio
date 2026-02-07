@@ -25,8 +25,8 @@ export default function Header({ onNavigate, activeSection }: HeaderProps) {
     { label: 'ABOUT', id: 'about' },
     { label: 'PROJECTS', id: 'projects' },
     { label: 'SKILLS', id: 'skills' },
-    { label: 'EXPERIENCE', id: 'education' },
-    { label: 'CONTACT', id: 'contact' },
+    { label: 'EDUCATION', id: 'education' },
+    
   ]
 
   const handleNavClick = (id: string) => {
@@ -51,7 +51,7 @@ export default function Header({ onNavigate, activeSection }: HeaderProps) {
         >
           <span className="text-2xl font-display font-normal uppercase tracking-wider text-foreground">
             {/* UPDATE: Change to your initials or name */}
-            YN
+            NAVS
           </span>
         </button>
 
@@ -83,7 +83,7 @@ export default function Header({ onNavigate, activeSection }: HeaderProps) {
             onClick={() => handleNavClick('contact')}
             className="px-6 py-2.5 rounded-full bg-foreground text-background font-semibold text-sm hover:bg-foreground/90 transition-all"
           >
-            Hire Me
+           CONTACT
           </button>
         </div>
 
@@ -124,7 +124,7 @@ export default function Header({ onNavigate, activeSection }: HeaderProps) {
                 onClick={() => handleNavClick('contact')}
                 className="w-full mt-2 px-6 py-3 rounded-full bg-foreground text-background font-semibold"
               >
-                Hire Me
+                Get in Touch
               </button>
             </div>
           </motion.div>

@@ -10,24 +10,31 @@ class ProjectCreate(BaseModel):
     title: str = Field(..., min_length=1, max_length=200)
     description: str = Field(..., min_length=10)
     technologies: Optional[str] = None
-    link: Optional[HttpUrl] = None
-    github_link: Optional[HttpUrl] = None
-    image_url: Optional[HttpUrl] = None
+    link: Optional[str] = None
+    github_link: Optional[str] = None
+    image_url: Optional[str] = None
     order: Optional[int] = 0
 
 class ProjectUpdate(BaseModel):
     title: Optional[str] = None
     description: Optional[str] = None
     technologies: Optional[str] = None
-    link: Optional[HttpUrl] = None
-    github_link: Optional[HttpUrl] = None
-    image_url: Optional[HttpUrl] = None
+    link: Optional[str] = None
+    github_link: Optional[str] = None
+    image_url: Optional[str] = None
     order: Optional[int] = None
 
-class ProjectResponse(ProjectCreate):
+class ProjectResponse(BaseModel):
     id: int
-    created_at: datetime
-    updated_at: datetime
+    title: str
+    description: str
+    technologies: Optional[str] = None
+    link: Optional[str] = None
+    github_link: Optional[str] = None
+    image_url: Optional[str] = None
+    order: Optional[int] = 0
+    created_at: Optional[datetime] = None
+    updated_at: Optional[datetime] = None
 
     class Config:
         from_attributes = True
@@ -68,11 +75,15 @@ class CertificationCreate(BaseModel):
     title: str = Field(..., min_length=1)
     issuer: str = Field(..., min_length=1)
     date_obtained: Optional[str] = None  # YYYY or YYYY-MM
-    credential_url: Optional[HttpUrl] = None
+    credential_url: Optional[str] = None
 
-class CertificationResponse(CertificationCreate):
+class CertificationResponse(BaseModel):
     id: int
-    created_at: datetime
+    title: str
+    issuer: str
+    date_obtained: Optional[str] = None
+    credential_url: Optional[str] = None
+    created_at: Optional[datetime] = None
 
     class Config:
         from_attributes = True

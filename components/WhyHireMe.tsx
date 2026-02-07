@@ -45,7 +45,7 @@ const reasons = [
     id: 6,
     icon: Shield,
     title: 'Best Practices',
-    description: 'Following industry standards for security, accessibility, and performance.',
+    description: 'Designing reliable, data-driven systems with performance and scalability in mind.',
   },
 ]
 

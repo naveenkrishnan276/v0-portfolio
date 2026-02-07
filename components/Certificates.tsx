@@ -1,16 +1,37 @@
 'use client'
 
-import { useRef } from 'react'
+import { useRef, useState, useEffect } from 'react'
 import { motion, useScroll, useTransform } from 'framer-motion'
 import { Award, ExternalLink } from 'lucide-react'
 import ParallaxSection from './ParallaxSection'
 
+// API base URL
+const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'
+
+// Certificate type from API
+interface CertificateFromAPI {
+  id: number
+  title: string
+  issuer: string
+  date_obtained: string | null
+  credential_url: string | null
+}
+
+// Display certificate type
+interface DisplayCertificate {
+  id: number
+  title: string
+  issuer: string
+  date: string
+  link: string
+}
+
 /*
  * ============================================
- * UPDATE YOUR CERTIFICATES DATA HERE
+ * FALLBACK CERTIFICATES DATA (if API unavailable)
  * ============================================
  */
-const certificates = [
+const fallbackCertificates: DisplayCertificate[] = [
   {
     id: 1,
     title: 'AWS Solutions Architect',
@@ -45,7 +66,7 @@ function CertificateCard({
   cert, 
   index 
 }: { 
-  cert: typeof certificates[0]
+  cert: DisplayCertificate
   index: number 
 }) {
   const ref = useRef<HTMLDivElement>(null)
@@ -102,6 +123,31 @@ function CertificateCard({
 
 export default function Certificates() {
   const ref = useRef<HTMLElement>(null)
+  const [certificates, setCertificates] = useState<DisplayCertificate[]>(fallbackCertificates)
+  
+  useEffect(() => {
+    async function fetchCertificates() {
+      try {
+        const response = await fetch(`${API_BASE}/api/education/certifications/`)
+        if (response.ok) {
+          const data: CertificateFromAPI[] = await response.json()
+          if (data.length > 0) {
+            const mapped: DisplayCertificate[] = data.map(cert => ({
+              id: cert.id,
+              title: cert.title,
+              issuer: cert.issuer || 'Unknown Issuer',
+              date: cert.date_obtained || '',
+              link: cert.credential_url || '#',
+            }))
+            setCertificates(mapped)
+          }
+        }
+      } catch (error) {
+        console.log('Using fallback certificates data')
+      }
+    }
+    fetchCertificates()
+  }, [])
   
   const { scrollYProgress } = useScroll({
     target: ref,

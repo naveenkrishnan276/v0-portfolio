@@ -46,14 +46,12 @@ export default function About() {
         >
           <p className="text-xl md:text-2xl text-foreground leading-relaxed mb-6">
             {/* UPDATE: Change your about description */}
-            I am a passionate developer with expertise in building modern web applications. 
-            With a strong foundation in both frontend and backend technologies, I create 
-            seamless digital experiences that combine elegant design with robust functionality.
+            I am a passionate developer with a strong interest in machine learning and modern web development.
+With a solid foundation in frontend and backend technologies, I build scalable digital applications that incorporate data-driven logic and intelligent decision-making.
           </p>
           <p className="text-lg text-muted-foreground leading-relaxed">
             {/* UPDATE: Add more about yourself */}
-            When I am not coding, you can find me exploring new technologies, contributing to 
-            open-source projects, or sharing knowledge with the developer community.
+            Beyond coding, I continuously learn and experiment with machine learning techniques to improve my problem-solving abilities.
           </p>
         </motion.div>
       </section>

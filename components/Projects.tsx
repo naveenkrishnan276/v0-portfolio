@@ -1,39 +1,52 @@
 'use client'
 
-import { useRef } from 'react'
+import { useRef, useState, useEffect } from 'react'
 import { motion, useScroll, useTransform } from 'framer-motion'
 import { ExternalLink, Github } from 'lucide-react'
 import ParallaxSection from './ParallaxSection'
 
-/*
- * ============================================
- * UPDATE YOUR PROJECTS DATA HERE
- * ============================================
- */
-const projects = [
+// API base URL - change this when deploying
+const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'
+
+// Project type from API
+interface Project {
+  id: number
+  title: string
+  description: string
+  technologies: string | null
+  link: string | null
+  github_link: string | null
+  order: number
+}
+
+// Fallback data if API is unavailable
+const fallbackProjects: Project[] = [
   {
     id: 1,
     title: 'Project One',
     description: 'A modern web application showcasing innovative design and seamless user experience.',
-    tech: ['React', 'Next.js', 'TypeScript', 'Tailwind'],
+    technologies: 'React, Next.js, TypeScript, Tailwind',
     link: '#',
-    github: '#',
+    github_link: '#',
+    order: 1
   },
   {
     id: 2,
     title: 'Project Two',
     description: 'Full-stack solution with robust backend architecture and real-time features.',
-    tech: ['Node.js', 'Express', 'PostgreSQL', 'Docker'],
+    technologies: 'Node.js, Express, PostgreSQL, Docker',
     link: '#',
-    github: '#',
+    github_link: '#',
+    order: 2
   },
   {
     id: 3,
     title: 'Project Three',
     description: 'AI-powered platform delivering intelligent insights and automation.',
-    tech: ['Python', 'FastAPI', 'React', 'MongoDB'],
+    technologies: 'Python, FastAPI, React, MongoDB',
     link: '#',
-    github: '#',
+    github_link: '#',
+    order: 3
   },
 ]
 
@@ -41,7 +54,7 @@ function ProjectCard({
   project, 
   index 
 }: { 
-  project: typeof projects[0]
+  project: Project
   index: number 
 }) {
   const ref = useRef<HTMLDivElement>(null)
@@ -54,6 +67,9 @@ function ProjectCard({
   const y = useTransform(scrollYProgress, [0, 1], [100, 0])
   const opacity = useTransform(scrollYProgress, [0, 0.3, 1], [0, 0.5, 1])
   const scale = useTransform(scrollYProgress, [0, 1], [0.9, 1])
+
+  // Parse technologies from comma-separated string
+  const techArray = project.technologies ? project.technologies.split(',').map(t => t.trim()) : []
 
   return (
     <motion.div
@@ -69,7 +85,7 @@ function ProjectCard({
         <div className="p-8 md:p-10 relative">
           {/* Project number */}
           <span className="text-6xl font-display font-normal text-muted/10 absolute top-4 right-6">
-            0{project.id}
+            0{index + 1}
           </span>
 
           {/* Title */}
@@ -84,7 +100,7 @@ function ProjectCard({
 
           {/* Tech Stack */}
           <div className="flex flex-wrap gap-3 mb-8">
-            {project.tech.map((tech) => (
+            {techArray.map((tech) => (
               <span
                 key={tech}
                 className="px-4 py-2 text-sm rounded-full bg-muted/20 text-foreground border border-border hover:border-muted-foreground/30 transition-colors"
@@ -96,20 +112,28 @@ function ProjectCard({
 
           {/* Links */}
           <div className="flex gap-4">
-            <a
-              href={project.link}
-              className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-foreground text-background font-semibold hover:bg-foreground/90 transition-all"
-            >
-              Live Project
-              <ExternalLink className="w-4 h-4" />
-            </a>
-            <a
-              href={project.github}
-              className="inline-flex items-center gap-2 px-6 py-3 rounded-full border border-border text-foreground font-semibold hover:border-muted-foreground/50 transition-all"
-            >
-              Source
-              <Github className="w-4 h-4" />
-            </a>
+            {project.link && (
+              <a
+                href={project.link}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-foreground text-background font-semibold hover:bg-foreground/90 transition-all"
+              >
+                Live Project
+                <ExternalLink className="w-4 h-4" />
+              </a>
+            )}
+            {project.github_link && (
+              <a
+                href={project.github_link}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 px-6 py-3 rounded-full border border-border text-foreground font-semibold hover:border-muted-foreground/50 transition-all"
+              >
+                Source
+                <Github className="w-4 h-4" />
+              </a>
+            )}
           </div>
         </div>
       </div>
@@ -119,6 +143,27 @@ function ProjectCard({
 
 export default function Projects() {
   const ref = useRef<HTMLElement>(null)
+  const [projects, setProjects] = useState<Project[]>(fallbackProjects)
+  const [isLoading, setIsLoading] = useState(true)
+  
+  useEffect(() => {
+    async function fetchProjects() {
+      try {
+        const response = await fetch(`${API_BASE}/api/projects`)
+        if (response.ok) {
+          const data = await response.json()
+          if (data.length > 0) {
+            setProjects(data)
+          }
+        }
+      } catch (error) {
+        console.log('Using fallback projects data')
+      } finally {
+        setIsLoading(false)
+      }
+    }
+    fetchProjects()
+  }, [])
   
   const { scrollYProgress } = useScroll({
     target: ref,

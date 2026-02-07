@@ -1,15 +1,33 @@
 'use client'
 
-import { useRef } from 'react'
+import { useRef, useState, useEffect } from 'react'
 import { motion, useScroll, useTransform, useInView } from 'framer-motion'
 import ParallaxSection from './ParallaxSection'
 
-/*
- * ============================================
- * UPDATE YOUR SKILLS DATA HERE
- * ============================================
- */
-const skills = [
+// API base URL - change this when deploying
+const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'
+
+// Skill type from API
+interface Skill {
+  id: number
+  name: string
+  category: string
+  level: string | null
+  order: number
+}
+
+// Convert level string to percentage
+function levelToPercent(level: string | null): number {
+  switch (level?.toLowerCase()) {
+    case 'advanced': return 90
+    case 'intermediate': return 70
+    case 'beginner': return 50
+    default: return 75
+  }
+}
+
+// Fallback data if API is unavailable
+const fallbackSkills = [
   { name: 'JAVA', level: 90 },
   { name: 'React / Next.js', level: 85 },
   { name: 'Python', level: 80 },
@@ -51,6 +69,30 @@ function SkillBar({ name, level, index }: { name: string; level: number; index: 
 
 export default function Skills() {
   const ref = useRef<HTMLElement>(null)
+  const [skills, setSkills] = useState<{ name: string; level: number }[]>(fallbackSkills)
+  const [isLoading, setIsLoading] = useState(true)
+  
+  useEffect(() => {
+    async function fetchSkills() {
+      try {
+        const response = await fetch(`${API_BASE}/api/skills`)
+        if (response.ok) {
+          const data: Skill[] = await response.json()
+          if (data.length > 0) {
+            setSkills(data.map(s => ({
+              name: s.name,
+              level: levelToPercent(s.level)
+            })))
+          }
+        }
+      } catch (error) {
+        console.log('Using fallback skills data')
+      } finally {
+        setIsLoading(false)
+      }
+    }
+    fetchSkills()
+  }, [])
   
   const { scrollYProgress } = useScroll({
     target: ref,

@@ -9,6 +9,7 @@ from dotenv import load_dotenv
 
 from .database import engine, Base, init_db
 from . import models
+from .routes import projects, skills, education, contact, admin
 
 load_dotenv()
 
@@ -26,19 +27,28 @@ app = FastAPI(
 )
 
 # CORS configuration (allow frontend to access API)
-frontend_url = os.getenv("FRONTEND_URL", "http://localhost:3000")
+frontend_urls = os.getenv("FRONTEND_URL", "http://localhost:3000").split(",")
+allowed_origins = [
+    "http://localhost:3000",
+    "http://localhost:3001",
+    *frontend_urls,
+]
+
+# Allow all origins in development, restrict in production
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[
-        frontend_url,
-        "http://localhost:3000",
-        "http://localhost:3001",
-        "https://yourdomain.com",  # Add your production domain
-    ],
+    allow_origins=["*"],  # You can restrict this to allowed_origins in production
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+# Include API routers
+app.include_router(projects.router)
+app.include_router(skills.router)
+app.include_router(education.router)
+app.include_router(contact.router)
+app.include_router(admin.router)
 
 # Root endpoint
 @app.get("/")
@@ -59,28 +69,6 @@ def health_check():
         "status": "healthy",
         "service": "portfolio-api"
     }
-
-# API v1 routers will be included here
-# Placeholder for routes that will be added
-@app.get("/api/projects")
-def get_projects():
-    """Placeholder for projects endpoint"""
-    return {"message": "Projects endpoint - will be implemented"}
-
-@app.get("/api/skills")
-def get_skills():
-    """Placeholder for skills endpoint"""
-    return {"message": "Skills endpoint - will be implemented"}
-
-@app.get("/api/education")
-def get_education():
-    """Placeholder for education endpoint"""
-    return {"message": "Education endpoint - will be implemented"}
-
-@app.post("/api/contact/messages")
-def send_message(data: dict):
-    """Placeholder for contact message endpoint"""
-    return {"message": "Message received - will be saved to database"}
 
 # Error handlers
 @app.exception_handler(404)
