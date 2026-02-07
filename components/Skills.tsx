@@ -75,18 +75,29 @@ export default function Skills() {
   useEffect(() => {
     async function fetchSkills() {
       try {
-        const response = await fetch(`${API_BASE}/api/skills`)
+        const url = `${API_BASE}/api/skills`
+        console.log('[v0] Fetching skills from:', url)
+        const response = await fetch(url, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        })
+        console.log('[v0] Skills response status:', response.status)
         if (response.ok) {
           const data: Skill[] = await response.json()
+          console.log('[v0] Skills data received:', data)
           if (data.length > 0) {
             setSkills(data.map(s => ({
               name: s.name,
               level: levelToPercent(s.level)
             })))
           }
+        } else {
+          console.log('[v0] Skills API error response')
         }
       } catch (error) {
-        console.log('Using fallback skills data')
+        console.log('[v0] Skills fetch error:', error)
       } finally {
         setIsLoading(false)
       }

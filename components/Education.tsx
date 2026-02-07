@@ -148,9 +148,18 @@ export default function Education() {
   useEffect(() => {
     async function fetchEducation() {
       try {
-        const response = await fetch(`${API_BASE}/api/education`)
+        const url = `${API_BASE}/api/education`
+        console.log('[v0] Fetching education from:', url)
+        const response = await fetch(url, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        })
+        console.log('[v0] Education response status:', response.status)
         if (response.ok) {
           const data: EducationItem[] = await response.json()
+          console.log('[v0] Education data received:', data)
           if (data.length > 0) {
             setEducation(data.map(e => ({
               id: e.id,
@@ -162,9 +171,11 @@ export default function Education() {
               endDate: e.end_date || 'Present',
             })))
           }
+        } else {
+          console.log('[v0] Education API error response')
         }
       } catch (error) {
-        console.log('Using fallback education data')
+        console.log('[v0] Education fetch error:', error)
       } finally {
         setIsLoading(false)
       }

@@ -149,15 +149,26 @@ export default function Projects() {
   useEffect(() => {
     async function fetchProjects() {
       try {
-        const response = await fetch(`${API_BASE}/api/projects`)
+        const url = `${API_BASE}/api/projects`
+        console.log('[v0] Fetching projects from:', url)
+        const response = await fetch(url, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        })
+        console.log('[v0] Projects response status:', response.status)
         if (response.ok) {
           const data = await response.json()
+          console.log('[v0] Projects data received:', data)
           if (data.length > 0) {
             setProjects(data)
           }
+        } else {
+          console.log('[v0] Projects API error response')
         }
       } catch (error) {
-        console.log('Using fallback projects data')
+        console.log('[v0] Projects fetch error:', error)
       } finally {
         setIsLoading(false)
       }
