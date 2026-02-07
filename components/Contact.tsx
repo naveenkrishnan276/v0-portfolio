@@ -5,6 +5,9 @@ import { motion, useScroll, useTransform } from 'framer-motion'
 import { Mail, Linkedin, Github, Twitter, Send, Phone } from 'lucide-react'
 import ParallaxSection from './ParallaxSection'
 
+// API base URL - uses environment variable in production
+const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'
+
 /*
  * ============================================
  * UPDATE YOUR SOCIAL LINKS HERE
@@ -71,7 +74,7 @@ export default function Contact() {
     setFieldErrors({})
     
     try {
-      const response = await fetch('http://localhost:8000/api/contact/messages', {
+      const response = await fetch(`${API_BASE}/api/contact/messages`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData),
