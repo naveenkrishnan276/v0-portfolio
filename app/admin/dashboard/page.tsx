@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { Plus, Trash2, LogOut, FolderOpen, Code, GraduationCap, Award, Mail, RefreshCw } from 'lucide-react'
 
-const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'
+const API_BASE = process.env.NEXT_PUBLIC_API_URL || ''
 
 type Tab = 'projects' | 'skills' | 'education' | 'certificates' | 'messages'
 

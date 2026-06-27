@@ -6,7 +6,7 @@ import { Award, ExternalLink } from 'lucide-react'
 import ParallaxSection from './ParallaxSection'
 
 // API base URL
-const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'
+const API_BASE = process.env.NEXT_PUBLIC_API_URL || ''
 
 // Certificate type from API
 interface CertificateFromAPI {

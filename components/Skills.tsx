@@ -5,7 +5,7 @@ import { motion, useScroll, useTransform, useInView } from 'framer-motion'
 import ParallaxSection from './ParallaxSection'
 
 // API base URL - change this when deploying
-const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'
+const API_BASE = process.env.NEXT_PUBLIC_API_URL || ''
 
 // Skill type from API
 interface Skill {

@@ -6,7 +6,7 @@ import { ExternalLink, Github } from 'lucide-react'
 import ParallaxSection from './ParallaxSection'
 
 // API base URL - change this when deploying
-const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'
+const API_BASE = process.env.NEXT_PUBLIC_API_URL || ''
 
 // Project type from API
 interface Project {
