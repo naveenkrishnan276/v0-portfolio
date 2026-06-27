@@ -5,8 +5,25 @@ __v0_jsx-dev-runtime.ts
 instrumentation-client.js
 instrumentation-client.ts
 
-# Common ignores
+# Node ignores
 node_modules/
 .next/
-.env*.local
 .DS_Store
+
+# Python ignores
+__pycache__/
+*.pyc
+*$py.class
+.pytest_cache/
+venv/
+api/venv/
+.venv/
+env/
+.env/
+
+# Environment and sensitive keys
+.env
+.env.local
+.env*.local
+*.db
+*.sqlite

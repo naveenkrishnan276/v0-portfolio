@@ -51,6 +51,7 @@ app.include_router(contact.router)
 app.include_router(admin.router)
 
 # Root endpoint
+@app.get("/api")
 @app.get("/")
 def read_root():
     """API root endpoint"""
@@ -62,6 +63,7 @@ def read_root():
     }
 
 # Health check
+@app.get("/api/health")
 @app.get("/health")
 def health_check():
     """Health check endpoint"""

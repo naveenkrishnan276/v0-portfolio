@@ -11,7 +11,7 @@ from ..database import get_db
 router = APIRouter(prefix="/api/skills", tags=["skills"])
 
 
-@router.get("/", response_model=List[schemas.SkillResponse])
+@router.get("", response_model=List[schemas.SkillResponse])
 def get_skills(
     category: Optional[str] = Query(None, description="Filter by category (frontend, backend, database, devops)"),
     skip: int = 0,

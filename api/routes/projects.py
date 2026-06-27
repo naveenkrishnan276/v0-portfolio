@@ -11,7 +11,7 @@ from ..database import get_db
 router = APIRouter(prefix="/api/projects", tags=["projects"])
 
 
-@router.get("/", response_model=List[schemas.ProjectResponse])
+@router.get("", response_model=List[schemas.ProjectResponse])
 def get_projects(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
     """Get all projects"""
     return crud.get_projects(db, skip=skip, limit=limit)

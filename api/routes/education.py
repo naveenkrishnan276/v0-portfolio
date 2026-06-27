@@ -11,7 +11,7 @@ from ..database import get_db
 router = APIRouter(prefix="/api/education", tags=["education"])
 
 
-@router.get("/", response_model=List[schemas.EducationResponse])
+@router.get("", response_model=List[schemas.EducationResponse])
 def get_education(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
     """Get all education entries"""
     return crud.get_education(db, skip=skip, limit=limit)
@@ -51,13 +51,13 @@ def delete_education(education_id: int, db: Session = Depends(get_db)):
 
 
 # Certifications
-@router.get("/certifications/", response_model=List[schemas.CertificationResponse])
+@router.get("/certifications", response_model=List[schemas.CertificationResponse])
 def get_certifications(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
     """Get all certifications"""
     return crud.get_certifications(db, skip=skip, limit=limit)
 
 
-@router.post("/certifications/", response_model=schemas.CertificationResponse)
+@router.post("/certifications", response_model=schemas.CertificationResponse)
 def create_certification(cert: schemas.CertificationCreate, db: Session = Depends(get_db)):
     """Create a new certification"""
     return crud.create_certification(db, cert)
